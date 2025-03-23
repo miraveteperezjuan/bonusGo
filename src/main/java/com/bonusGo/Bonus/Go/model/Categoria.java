@@ -11,7 +11,7 @@ public enum Categoria {
 
     BRONCE(1, "Bronce"),
     PLATA(2, "Plata"),
-    ORO(3, "Oor");
+    ORO(3, "Oro");
 
     private int id_Categoria;
     private String nombre;

@@ -34,7 +34,7 @@ public class Usuario {
     @JoinColumn(name = "id_Rol")
     private Rol rol;
 
-    public Usuario(int id_Usuario, String nombre, String apellido, String correo, String telefono, String password) {
+public Usuario(int id_Usuario, String nombre, String apellido, String correo, String telefono, String password) {
         this.id_Usuario = id_Usuario;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -43,4 +43,14 @@ public class Usuario {
         this.password = password;
     }
 
+
+    public Usuario(int id_Usuario, String nombre, String apellido, String correo, String telefono, String password, Rol rol) {
+        this.id_Usuario = id_Usuario;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.password = password;
+        this.rol = rol;
+    }
 }

@@ -1,11 +1,11 @@
 package com.bonusGo.Bonus.Go.service;
 
-
 import com.bonusGo.Bonus.Go.dto.LoginDTO;
 import com.bonusGo.Bonus.Go.dto.UsuarioDTO;
 import com.bonusGo.Bonus.Go.model.Rol;
 import com.bonusGo.Bonus.Go.model.Usuario;
 import com.bonusGo.Bonus.Go.payload.LoginMesage;
+import com.bonusGo.Bonus.Go.repository.RolRepository;
 import com.bonusGo.Bonus.Go.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,10 +20,15 @@ public class UsuarioServiceImp implements UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private RolRepository rolRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public String add(UsuarioDTO usuarioDTO) {
+
+        Rol rolInicial = rolRepository.getRol(1);
 
         Usuario usuario = new Usuario(
                 usuarioDTO.getId_Usuario(),
@@ -31,9 +36,10 @@ public class UsuarioServiceImp implements UsuarioService {
                 usuarioDTO.getApellido(),
                 usuarioDTO.getCorreo(),
                 usuarioDTO.getTelefono(),
-                this.passwordEncoder.encode(usuarioDTO.getPassword()));
+                this.passwordEncoder.encode(usuarioDTO.getPassword()),
+                rolInicial);
 
-        usuarioRepository.save(usuario);
+                usuarioRepository.save(usuario);
         return usuario.getNombre();
     }
 
