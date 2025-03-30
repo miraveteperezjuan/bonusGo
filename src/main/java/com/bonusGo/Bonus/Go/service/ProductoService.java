@@ -6,11 +6,14 @@ import java.util.List;
 
 public interface ProductoService {
 
-    Producto save(Producto producto);
+    Producto registrarProducto(Producto producto, String tipo);
+
+    Producto actualizarMonedas(int id, int coste);
+
+    void eliminarProducto(int id);
 
     List<Producto> listaProductos();
 
-    Producto buscaProducto(int id);
+    Producto buscarProductoId(int id);
 
-    Producto eliminaProducto(int id);
 }

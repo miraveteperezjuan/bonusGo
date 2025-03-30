@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class RolController {
 
     //http://localhost:8080/rol/
-
     @Autowired
     private RolService rolService;
 

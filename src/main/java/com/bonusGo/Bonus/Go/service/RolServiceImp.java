@@ -11,8 +11,4 @@ public class RolServiceImp implements RolService {
     @Autowired
     private RolRepository rolRepository;
 
-    @Override
-    public Rol getRol(int id){
-        return rolRepository.getRol(id);
-    }
 }

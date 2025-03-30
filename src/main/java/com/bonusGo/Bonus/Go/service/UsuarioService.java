@@ -1,15 +1,28 @@
 package com.bonusGo.Bonus.Go.service;
 
-import com.bonusGo.Bonus.Go.dto.LoginDTO;
-import com.bonusGo.Bonus.Go.dto.UsuarioDTO;
-import com.bonusGo.Bonus.Go.payload.LoginMesage;
+import com.bonusGo.Bonus.Go.model.Usuario;
+import com.bonusGo.Bonus.Go.payload.LoginResponse;
+
+import java.util.List;
 
 public interface UsuarioService {
 
-    String add(UsuarioDTO usuarioDTO);
+    Usuario getlogin(String correo, String pass);
 
-    LoginMesage loginUsuario(LoginDTO loginDTO);
+    Usuario registerUsuario(Usuario usuario);
 
+    Usuario registerAdministrador(Usuario usuario);
 
+    List<Usuario> getUsuarioCorreo(String correo);
+
+    List<Usuario> getAllUsuarios();
+
+    Usuario getUsuarioById(int id);
+
+    void deleteUsuario(int id);
+
+    Usuario updateUsuarioContacto(int id, String nuevoCorreo, String nuevoTelefono);
+
+    Usuario updateMonedas(int id, int nuevaMoneda);
 
 }
