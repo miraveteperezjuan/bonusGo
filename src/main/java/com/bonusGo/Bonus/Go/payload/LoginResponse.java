@@ -5,11 +5,12 @@ import com.bonusGo.Bonus.Go.model.Usuario;
 public class LoginResponse {
 
     private String token;
-    private Usuario usuario;
+    private String tokenType = "Bearer";
 
-    public LoginResponse(String token, Usuario usuario) {
+    public LoginResponse() {}
+
+    public LoginResponse(String token) {
         this.token = token;
-        this.usuario = usuario;
     }
 
     public String getToken() {
@@ -20,11 +21,11 @@ public class LoginResponse {
         this.token = token;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public String getTokenType() {
+        return tokenType;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
     }
 }

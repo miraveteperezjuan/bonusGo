@@ -25,4 +25,6 @@ public interface UsuarioService {
 
     Usuario updateMonedas(int id, int nuevaMoneda);
 
+    boolean existsByEmail(String email);
+
 }

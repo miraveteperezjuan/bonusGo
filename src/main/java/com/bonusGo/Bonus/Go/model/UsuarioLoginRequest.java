@@ -5,7 +5,6 @@ public class UsuarioLoginRequest {
     private String correo;
     private String pass;
 
-    // Getters y Setters
     public String getCorreo() {
         return correo;
     }

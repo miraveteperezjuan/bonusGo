@@ -135,6 +135,11 @@ public class UsuarioServiceImp implements UsuarioService {
             throw new RuntimeException("Usuario no encontrado");
         }
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return usuarioRepository.existsByCorreo(email);
+    }
 }
 
  /*  @Override
