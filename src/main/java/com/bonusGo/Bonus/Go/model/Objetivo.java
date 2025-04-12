@@ -1,6 +1,7 @@
 package com.bonusGo.Bonus.Go.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Objetivo {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "ganancia_monedas", joinColumns = @JoinColumn(name = "id_objetivo"),
             inverseJoinColumns = @JoinColumn(name = "id_Usuario"))
+    @JsonIgnore
     private List<Usuario> usuarios;
 
     @Enumerated(EnumType.STRING)

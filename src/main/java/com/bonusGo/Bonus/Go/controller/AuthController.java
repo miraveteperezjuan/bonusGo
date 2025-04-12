@@ -16,10 +16,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -40,46 +40,115 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> autenticar(@RequestBody UsuarioLoginRequest loginRequest) {
-        try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getCorreo(),
-                            loginRequest.getPass()
-                    )
-            );
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            String token = jwtUtil.createToken(auth);
-            return ResponseEntity.ok(new LoginResponse(token));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al logear - " + e.getMessage());
+    @PostMapping("/loginUser")
+    public ResponseEntity<?> loginUser(@RequestBody UsuarioLoginRequest loginRequest) {
+        Usuario usuario = userService.getlogin(loginRequest.getCorreo(), loginRequest.getPass());
+
+        if (usuario == null || !usuario.getRol().getNombre().equals("ROLE_USER")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Acceso denegado");
         }
+
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getCorreo(),
+                        loginRequest.getPass()
+                )
+        );
+
+        String token = jwtUtil.createToken(auth);
+        return ResponseEntity.ok(new LoginResponse(token));
     }
 
-    @PostMapping("/registrar")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+    @PostMapping("/loginAdmin")
+    public ResponseEntity<?> loginAdmin(@RequestBody UsuarioLoginRequest loginRequest) {
+        Usuario usuario = userService.getlogin(loginRequest.getCorreo(), loginRequest.getPass());
 
-        if (userService.existsByEmail(registerRequest.getCorreo())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error: Email en uso.");
+        if (usuario == null || !usuario.getRol().getNombre().equals("ROLE_ADMIN")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Acceso denegado");
         }
 
-        Usuario usuario = new Usuario(registerRequest.getNombre(),
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getCorreo(),
+                        loginRequest.getPass()
+                )
+        );
+
+        String token = jwtUtil.createToken(auth);
+        return ResponseEntity.ok(new LoginResponse(token));
+    }
+
+
+    @PostMapping("/registrar")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        if (userService.existsByEmail(request.getCorreo())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email ya en uso.");
+        }
+
+        Usuario usuario = new Usuario(
+                request.getNombre(),
+                request.getApellido(),
+                request.getCorreo(),
+                request.getTelefono(),
+                passwordEncoder.encode(request.getPassword())
+        );
+
+        usuario.setMoneda(0);
+        Rol rolUser = rolRepository.findByNombre("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Rol USER no encontrado"));
+        usuario.setRol(rolUser);
+
+        userService.registerUsuario(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado.");
+    }
+
+    @PostMapping("/registrarAdmin")
+    public ResponseEntity<?> registrarAdmin(@RequestBody RegisterRequest registerRequest) {
+        if (userService.existsByEmail(registerRequest.getCorreo())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El correo ya está en uso.");
+        }
+
+        Usuario admin = new Usuario(
+                registerRequest.getNombre(),
                 registerRequest.getApellido(),
                 registerRequest.getCorreo(),
                 registerRequest.getTelefono(),
-                passwordEncoder.encode(registerRequest.getPassword()));
+                passwordEncoder.encode(registerRequest.getPassword())
+        );
 
-        usuario.setMoneda(0);
-        Rol rol = rolRepository.findById(1).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-        usuario.setRol(rol);
+        admin.setMoneda(0);
 
-        try {
-            userService.registerUsuario(usuario);
+        Rol rolAdmin = rolRepository.findByNombre("ROLE_ADMIN")
+                .orElseThrow(() -> new RuntimeException("Rol ADMIN no encontrado"));
 
-            return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado con exito.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-        }
+        admin.setRol(rolAdmin);
+
+        userService.registerAdministrador(admin);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Administrador registrado con éxito.");
     }
+
+    @GetMapping("/token/info")
+    public ResponseEntity<?> getTokenInfo(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Token no proporcionado o mal formado"));
+        }
+
+        String token = authHeader.substring(7); // Quita el prefijo "Bearer "
+
+        if (!jwtUtil.validateJwtToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido"));
+        }
+
+        String correo = jwtUtil.getUsernameFromJwt(token);
+        String rol = jwtUtil.getRolFromJwt(token);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("correo", correo);
+        response.put("rol", rol);
+
+        return ResponseEntity.ok(response);
+    }
+
 }
+

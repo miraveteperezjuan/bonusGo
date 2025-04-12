@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProductoService {
 
-    Producto registrarProducto(Producto producto, String tipo);
+    Producto registrarProducto(Producto producto);
 
     Producto actualizarMonedas(int id, int coste);
 
@@ -15,5 +15,7 @@ public interface ProductoService {
     List<Producto> listaProductos();
 
     Producto buscarProductoId(int id);
+
+    Producto actualizarCoste(int id, int coste);
 
 }

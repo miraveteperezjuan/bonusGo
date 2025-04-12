@@ -20,12 +20,24 @@ public class JwtUtil {
     public String createToken(Authentication authentication) {
         User userPrincipal = (User) authentication.getPrincipal();
 
+        String rol = userPrincipal.getAuthorities().iterator().next().getAuthority(); // Ej: "ROLE_USER"
+
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
+                .claim("rol", rol)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+    }
+
+    public String getRolFromJwt(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("rol", String.class);
     }
 
     public String getUsernameFromJwt(String token) {

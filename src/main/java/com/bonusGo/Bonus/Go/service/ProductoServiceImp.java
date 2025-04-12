@@ -3,6 +3,7 @@ package com.bonusGo.Bonus.Go.service;
 import com.bonusGo.Bonus.Go.model.Producto;
 import com.bonusGo.Bonus.Go.model.Tipo;
 import com.bonusGo.Bonus.Go.repository.ProductoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,14 +12,11 @@ import java.util.Optional;
 @Service
 public class ProductoServiceImp implements ProductoService {
 
+    @Autowired
     private ProductoRepository productoRepository;
 
     @Override
-    public Producto registrarProducto(Producto producto, String tipo) {
-
-        Tipo t = Tipo.valueOf(tipo); //Se convierte a enum
-        producto.setTipo(t); //Asignamos el tipo que le queremos dar al producto
-
+    public Producto registrarProducto(Producto producto) {
         return productoRepository.save(producto);
     }
 
@@ -49,4 +47,14 @@ public class ProductoServiceImp implements ProductoService {
     public Producto buscarProductoId(int id) {
         return productoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
     }
+
+    @Override
+    public Producto actualizarCoste(int id, int coste) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        producto.setCoste(coste);
+        return productoRepository.save(producto);
+    }
+
+
 }

@@ -30,6 +30,7 @@ public class Producto {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "transacciones", joinColumns = @JoinColumn(name = "id_Producto"),
             inverseJoinColumns = @JoinColumn(name = "id_Usuario"))
+    @JsonIgnore
     private List<Usuario> usuarios;
 
     @Enumerated(EnumType.STRING)

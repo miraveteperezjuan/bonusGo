@@ -1,8 +1,5 @@
 package com.bonusGo.Bonus.Go.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-
 public enum Tipo {
     ROPA(1, "Ropa", "Prendas de vestir y artículos de moda diseñados para el día a día, ocasiones especiales y actividades deportivas."),
     EXPERIENCIA(2, "Experiencia", "Eventos y actividades únicas que incluyen entretenimiento, viajes, gastronomía y aventuras emocionantes."),

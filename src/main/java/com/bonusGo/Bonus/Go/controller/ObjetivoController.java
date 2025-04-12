@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/objetivos")
+@RequestMapping("/objetivos")
 public class ObjetivoController {
 
     @Autowired
@@ -22,22 +22,12 @@ public class ObjetivoController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<Objetivo> registrarObjetivo(@RequestBody Objetivo objetivo, @RequestParam String categoria) {
+    public ResponseEntity<Objetivo> registrarObjetivo(@RequestBody Objetivo objetivo) {
         try {
-            Objetivo nuevoObjetivo = objetivoService.registObjetivo(objetivo, categoria);
+            Objetivo nuevoObjetivo = objetivoService.registObjetivo(objetivo);
             return new ResponseEntity<>(nuevoObjetivo, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Objetivo> actualizarMonedas(@PathVariable int id, @RequestParam int monedas) {
-        try {
-            Objetivo objetivoActualizado = objetivoService.actualizarMonedas(id, monedas);
-            return new ResponseEntity<>(objetivoActualizado, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -66,4 +56,16 @@ public class ObjetivoController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Objetivo> actualizarMonedas(@PathVariable int id, @RequestParam int monedas) {
+        try {
+            Objetivo objetivo = objetivoService.actualizarMonedas(id, monedas);
+            return new ResponseEntity<>(objetivo, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

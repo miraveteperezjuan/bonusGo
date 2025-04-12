@@ -1,4 +1,5 @@
 package com.bonusGo.Bonus.Go.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
 
 @Entity
@@ -35,6 +34,7 @@ public class Usuario implements UserDetails {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_Rol")
+    @JsonIgnore
     private Rol rol;
 
     public Usuario(int id_Usuario, String nombre, String apellido, String correo, String telefono, String password, Rol rol) {
@@ -62,6 +62,9 @@ public class Usuario implements UserDetails {
         this.correo = correo;
         this.telefono = telefono;
         this.password = password;
+    }
+
+    public Usuario() {
     }
 
     public int getId_Usuario() {

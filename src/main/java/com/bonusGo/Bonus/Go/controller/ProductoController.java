@@ -24,22 +24,12 @@ public class ProductoController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<Producto> registrarProducto(@RequestBody Producto producto, @RequestParam String tipo) {
+    public ResponseEntity<Producto> registrarProducto(@RequestBody Producto producto) {
         try {
-            Producto nuevoProducto = productoService.registrarProducto(producto, tipo);
+            Producto nuevoProducto = productoService.registrarProducto(producto);
             return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Producto> actualizarMonedas(@PathVariable int id, @RequestParam int coste) {
-        try {
-            Producto productoActualizado = productoService.actualizarMonedas(id, coste);
-            return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -68,5 +58,16 @@ public class ProductoController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Producto> actualizarMonedas(@PathVariable int id, @RequestParam int coste) {
+        try {
+            Producto productoActualizado = productoService.actualizarMonedas(id, coste);
+            return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 }

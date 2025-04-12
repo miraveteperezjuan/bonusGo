@@ -31,11 +31,11 @@ public class UsuarioServiceImp implements UsuarioService {
         if (optionalUsuario.isPresent()) {
             Usuario usuario = optionalUsuario.get();
 
-            // Comparar la contraseña
-            if (pass.equals(usuario.getPassword())) {
+            if (passwordEncoder.matches(pass, usuario.getPassword())) {
                 return usuario;
             }
         }
+
         return null;
     }
 
@@ -97,10 +97,6 @@ public class UsuarioServiceImp implements UsuarioService {
         }
 
         Usuario usuario = usuarioOptional.get();
-
-       /* if (usuario.getRol().getId_Rol() != 2) {
-            throw new RuntimeException("No tienes permisos para eliminar este usuario");
-        }*/
         usuarioRepository.deleteById(id);
     }
 
@@ -125,15 +121,10 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Override
     public Usuario updateMonedas(int id, int nuevaMoneda) {
-        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
-
-        if (optionalUsuario.isPresent()) {
-            Usuario usuario = optionalUsuario.get();
-            usuario.setMoneda(nuevaMoneda);
-            return usuarioRepository.save(usuario);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        usuario.setMoneda(nuevaMoneda);
+        return usuarioRepository.save(usuario);
     }
 
     @Override
@@ -141,17 +132,3 @@ public class UsuarioServiceImp implements UsuarioService {
         return usuarioRepository.existsByCorreo(email);
     }
 }
-
- /*  @Override
-    public Usuario getlogin(String correo, String pass) {
-        // Buscar el usuario por correo
-        Usuario usuario = usuarioRepository.getByCorreoLogin(correo);
-
-        if (usuario != null) {
-            // Verificar que la contraseña coincide con el hash almacenado
-            if (passwordEncoder.matches(pass, usuario.getPassword())) {
-                return usuario;
-            }
-        }
-        return null; // Si no coincide o no existe, devolver null
-    }*/

@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
 
 @Entity
@@ -29,6 +28,17 @@ public class Rol implements GrantedAuthority {
 
     @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Usuario> usuarios;
+
+    public Rol(int id_Rol, String nombre, String descripcion, String permisos, List<Usuario> usuarios) {
+        this.id_Rol = id_Rol;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.permisos = permisos;
+        this.usuarios = usuarios;
+    }
+
+    public Rol() {
+    }
 
     @Override
     public String getAuthority() {

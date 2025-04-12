@@ -3,6 +3,7 @@ package com.bonusGo.Bonus.Go.service;
 import com.bonusGo.Bonus.Go.model.Categoria;
 import com.bonusGo.Bonus.Go.model.Objetivo;
 import com.bonusGo.Bonus.Go.repository.ObjetivoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,19 +11,11 @@ import java.util.List;
 @Service
 public class ObjetivoServiceImp implements ObjetivoService {
 
+    @Autowired
     private ObjetivoRepository objetivoRepository;
 
     @Override
-    public Objetivo registObjetivo(Objetivo objetivo, String categoria) {
-        Categoria c = Categoria.valueOf(categoria);
-        objetivo.setCategoria(c);
-        return objetivoRepository.save(objetivo);
-    }
-
-    @Override
-    public Objetivo actualizarMonedas(int id, int monedas) {
-        Objetivo objetivo = objetivoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        objetivo.setMonedas(monedas);
+    public Objetivo registObjetivo(Objetivo objetivo) {
         return objetivoRepository.save(objetivo);
     }
 
@@ -46,4 +39,14 @@ public class ObjetivoServiceImp implements ObjetivoService {
     public Objetivo buscarObjetivo(int id) {
         return objetivoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
     }
+
+    @Override
+    public Objetivo actualizarMonedas(int id, int monedas) {
+        Objetivo objetivo = objetivoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Objetivo no encontrado"));
+        objetivo.setMonedas(monedas);
+        return objetivoRepository.save(objetivo);
+    }
+
+
 }
