@@ -26,6 +26,8 @@ public class Objetivo {
     private String descripcion;
     @Column(length = 4)
     private Integer monedas;
+    @Column
+    private boolean isEnabled;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "ganancia_monedas", joinColumns = @JoinColumn(name = "id_objetivo"),
@@ -82,5 +84,13 @@ public class Objetivo {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }

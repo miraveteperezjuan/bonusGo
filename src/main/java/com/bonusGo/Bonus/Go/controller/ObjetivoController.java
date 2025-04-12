@@ -67,5 +67,41 @@ public class ObjetivoController {
         }
     }
 
+    //Tema isEnables
+    @GetMapping("/habilitados")
+    public ResponseEntity<List<Objetivo>> listarHabilitados() {
+        return new ResponseEntity<>(objetivoService.listarHabilitados(), HttpStatus.OK);
+    }
+
+    @GetMapping("/deshabilitados")
+    public ResponseEntity<List<Objetivo>> listarDeshabilitados() {
+        return new ResponseEntity<>(objetivoService.listarDeshabilitados(), HttpStatus.OK);
+    }
+
+    @PutMapping("/deshabilitar/{id}")
+    public ResponseEntity<String> deshabilitar(@PathVariable int id) {
+        objetivoService.setEstado(id, false);
+        return ResponseEntity.ok("Objetivo deshabilitado");
+    }
+
+    @PutMapping("/habilitar/{id}")
+    public ResponseEntity<String> habilitar(@PathVariable int id) {
+        objetivoService.setEstado(id, true);
+        return ResponseEntity.ok("Objetivo habilitado");
+    }
+
+    //tema del canje del objetivo
+    @PutMapping("/canjear/{idObjetivo}")
+    public ResponseEntity<String> canjearObjetivo(@PathVariable int idObjetivo, @RequestParam int idUsuario) {
+        try {
+            objetivoService.canjearObjetivo(idObjetivo, idUsuario);
+            return ResponseEntity.ok("Objetivo canjeado con éxito. ¡Has ganado monedas!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+
 
 }

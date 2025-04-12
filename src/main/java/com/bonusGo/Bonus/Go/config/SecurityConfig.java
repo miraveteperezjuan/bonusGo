@@ -50,12 +50,21 @@ public class SecurityConfig {
                         .requestMatchers("/producto/registrar").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/producto/eliminar/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/objetivos/eliminar/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/producto/deshabilitar/**", "/producto/habilitar/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/objetivos/deshabilitar/**", "/objetivos/habilitar/**").hasAuthority("ROLE_ADMIN")
+
+
 
                         // Rutas accesibles por USER o ADMIN
                         .requestMatchers("/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/usuario/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/producto/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/objetivo/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/producto/canjear/**", "/objetivos/canjear/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+                        //Quedaría por configurar eso.
+                        //.requestMatchers("/usuario/*/productos-canjeados").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
 
                         // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()

@@ -1,5 +1,6 @@
 package com.bonusGo.Bonus.Go.controller;
 
+import com.bonusGo.Bonus.Go.model.Producto;
 import com.bonusGo.Bonus.Go.model.Usuario;
 import com.bonusGo.Bonus.Go.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,4 +77,5 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> getAllUsuarios() {
         return new ResponseEntity<>(usuarioService.getAllUsuarios(), HttpStatus.OK);
     }
+
 }

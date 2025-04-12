@@ -26,6 +26,8 @@ public class Producto {
     private String descripcion;
     @Column(length = 4)
     private int coste;
+    @Column
+    private boolean isEnabled;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "transacciones", joinColumns = @JoinColumn(name = "id_Producto"),
@@ -82,5 +84,13 @@ public class Producto {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }

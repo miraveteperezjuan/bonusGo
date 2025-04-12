@@ -12,4 +12,8 @@ import java.util.List;
 @Repository
 public interface ObjetivoRepository extends JpaRepository<Objetivo, Integer> {
 
+    List<Objetivo> findByIsEnabledTrue();
+    List<Objetivo> findByIsEnabledFalse();
+
+
 }

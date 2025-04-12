@@ -16,6 +16,12 @@ public interface ProductoService {
 
     Producto buscarProductoId(int id);
 
-    Producto actualizarCoste(int id, int coste);
+    List<Producto> listarHabilitados();
+
+    List<Producto> listarDeshabilitados();
+
+    void setEstado(int id, boolean habilitado);
+
+    void canjearProducto(int idProducto, int idUsuario);
 
 }

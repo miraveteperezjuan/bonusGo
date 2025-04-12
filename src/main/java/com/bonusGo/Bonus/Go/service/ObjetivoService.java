@@ -16,5 +16,13 @@ public interface ObjetivoService {
 
     Objetivo buscarObjetivo(int id);
 
+    List<Objetivo> listarHabilitados();
+
+    List<Objetivo> listarDeshabilitados();
+
+    void setEstado(int id, boolean habilitado);
+
+    void canjearObjetivo(int idObjetivo, int idUsuario);
+
 
 }

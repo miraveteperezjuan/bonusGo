@@ -69,5 +69,46 @@ public class ProductoController {
         }
     }
 
+    //Tema del isEnabled
+    // Obtener productos habilitados
+    @GetMapping("/habilitados")
+    public ResponseEntity<List<Producto>> listarHabilitados() {
+        return new ResponseEntity<>(productoService.listarHabilitados(), HttpStatus.OK);
+    }
+
+    // Obtener productos deshabilitados
+    @GetMapping("/deshabilitados")
+    public ResponseEntity<List<Producto>> listarDeshabilitados() {
+        return new ResponseEntity<>(productoService.listarDeshabilitados(), HttpStatus.OK);
+    }
+
+    // Deshabilitar producto
+    @PutMapping("/deshabilitar/{id}")
+    public ResponseEntity<String> deshabilitar(@PathVariable int id) {
+        productoService.setEstado(id, false);
+        return ResponseEntity.ok("Producto deshabilitado");
+    }
+
+    // Rehabilitar producto
+    @PutMapping("/habilitar/{id}")
+    public ResponseEntity<String> habilitar(@PathVariable int id) {
+        productoService.setEstado(id, true);
+        return ResponseEntity.ok("Producto habilitado");
+    }
+
+    //Canjear los productos para el user
+    @PutMapping("/canjear/{idProducto}")
+    public ResponseEntity<String> canjearProducto(@PathVariable int idProducto, @RequestParam int idUsuario) {
+        try {
+            productoService.canjearProducto(idProducto, idUsuario);
+            return ResponseEntity.ok("Producto canjeado con éxito.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+
+
 
 }

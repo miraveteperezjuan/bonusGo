@@ -2,7 +2,9 @@ package com.bonusGo.Bonus.Go.service;
 
 import com.bonusGo.Bonus.Go.model.Producto;
 import com.bonusGo.Bonus.Go.model.Tipo;
+import com.bonusGo.Bonus.Go.model.Usuario;
 import com.bonusGo.Bonus.Go.repository.ProductoRepository;
+import com.bonusGo.Bonus.Go.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class ProductoServiceImp implements ProductoService {
 
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public Producto registrarProducto(Producto producto) {
@@ -49,12 +54,48 @@ public class ProductoServiceImp implements ProductoService {
     }
 
     @Override
-    public Producto actualizarCoste(int id, int coste) {
+    public List<Producto> listarHabilitados() {
+        return productoRepository.findByIsEnabledTrue();
+    }
+
+    @Override
+    public List<Producto> listarDeshabilitados() {
+        return productoRepository.findByIsEnabledFalse();
+    }
+
+    @Override
+    public void setEstado(int id, boolean habilitado) {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        producto.setCoste(coste);
-        return productoRepository.save(producto);
+        producto.setEnabled(habilitado);
+        productoRepository.save(producto);
     }
+
+    //Canjear los productos para el user
+    @Override
+    public void canjearProducto(int idProducto, int idUsuario) {
+        Producto producto = productoRepository.findById(idProducto)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        if (!producto.isEnabled()) {
+            throw new RuntimeException("Producto no disponible");
+        }
+
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (usuario.getMoneda() < producto.getCoste()) {
+            throw new RuntimeException("Saldo insuficiente para canjear este producto");
+        }
+
+        usuario.setMoneda(usuario.getMoneda() - producto.getCoste());
+
+        producto.getUsuarios().add(usuario);
+
+        usuarioRepository.save(usuario);
+        productoRepository.save(producto);
+    }
+
 
 
 }
