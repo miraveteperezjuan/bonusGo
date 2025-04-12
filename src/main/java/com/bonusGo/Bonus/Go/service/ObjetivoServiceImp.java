@@ -1,8 +1,7 @@
 package com.bonusGo.Bonus.Go.service;
 
-import com.bonusGo.Bonus.Go.model.Categoria;
-import com.bonusGo.Bonus.Go.model.Objetivo;
-import com.bonusGo.Bonus.Go.model.Usuario;
+import com.bonusGo.Bonus.Go.model.*;
+import com.bonusGo.Bonus.Go.repository.GananciaRepository;
 import com.bonusGo.Bonus.Go.repository.ObjetivoRepository;
 import com.bonusGo.Bonus.Go.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,9 @@ public class ObjetivoServiceImp implements ObjetivoService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private GananciaRepository gananciaRepository;
 
     @Override
     public Objetivo registObjetivo(Objetivo objetivo) {
@@ -83,15 +85,26 @@ public class ObjetivoServiceImp implements ObjetivoService {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Sumar monedas al usuario
-        int nuevasMonedas = usuario.getMoneda() + objetivo.getMonedas();
-        usuario.setMoneda(nuevasMonedas);
+        usuario.setMoneda(usuario.getMoneda() + objetivo.getMonedas());
 
-        // Registrar que lo completó
-        objetivo.getUsuarios().add(usuario);
+        GananciaMonedas gananciaMonedas = new GananciaMonedas();
+        gananciaMonedas.setUsuario(usuario);
+        gananciaMonedas.setObjetivo(objetivo);
+        gananciaMonedas.setCanjeado(true);
 
+        //objetivo.getUsuarios().add(usuario);
+        gananciaRepository.save(gananciaMonedas);
         usuarioRepository.save(usuario);
-        objetivoRepository.save(objetivo);
+        //objetivoRepository.save(objetivo);
+    }
+
+    public List<Objetivo> listarDisponiblesParaUsuario(int userId) {
+        List<Objetivo> todos = objetivoRepository.findByIsEnabledTrue();
+        List<Objetivo> yaCanjeados = gananciaRepository.findObjetivosCanjeadosByUsuarioId(userId);
+
+        return todos.stream()
+                .filter(p -> !yaCanjeados.contains(p))
+                .toList();
     }
 
 

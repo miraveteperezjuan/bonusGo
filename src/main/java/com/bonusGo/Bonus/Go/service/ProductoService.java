@@ -20,8 +20,10 @@ public interface ProductoService {
 
     List<Producto> listarDeshabilitados();
 
+    List<Producto> listarDisponiblesParaUsuario(int userId);
+
     void setEstado(int id, boolean habilitado);
 
-    void canjearProducto(int idProducto, int idUsuario);
+    void canjearProducto(int id_Producto, int id_Usuario);
 
 }

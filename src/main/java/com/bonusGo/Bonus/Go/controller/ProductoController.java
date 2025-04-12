@@ -107,8 +107,10 @@ public class ProductoController {
         }
     }
 
-
-
-
+    @GetMapping("/disponibles/{idUsuario}")
+    public ResponseEntity<List<Producto>> productosDisponibles(@PathVariable int idUsuario) {
+        List<Producto> disponibles = productoService.listarDisponiblesParaUsuario(idUsuario);
+        return ResponseEntity.ok(disponibles);
+    }
 
 }

@@ -26,8 +26,8 @@ public class Objetivo {
     private String descripcion;
     @Column(length = 4)
     private Integer monedas;
-    @Column
-    private boolean isEnabled;
+    @Column(nullable = false)
+    private boolean isEnabled  = true;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "ganancia_monedas", joinColumns = @JoinColumn(name = "id_objetivo"),

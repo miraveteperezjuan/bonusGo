@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
-@AllArgsConstructor
-
 @Entity
 @Table(name = "roles")
 public class Rol implements GrantedAuthority {

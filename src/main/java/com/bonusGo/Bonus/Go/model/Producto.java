@@ -26,8 +26,8 @@ public class Producto {
     private String descripcion;
     @Column(length = 4)
     private int coste;
-    @Column
-    private boolean isEnabled;
+    @Column(nullable = false)
+    private boolean isEnabled = true;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "transacciones", joinColumns = @JoinColumn(name = "id_Producto"),
