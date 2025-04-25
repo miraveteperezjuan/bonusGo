@@ -1,6 +1,5 @@
 package com.bonusGo.Bonus.Go.controller;
 
-import com.bonusGo.Bonus.Go.model.Producto;
 import com.bonusGo.Bonus.Go.model.Usuario;
 import com.bonusGo.Bonus.Go.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
