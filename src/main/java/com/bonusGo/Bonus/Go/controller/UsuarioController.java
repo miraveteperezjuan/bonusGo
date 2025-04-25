@@ -77,4 +77,15 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioService.getAllUsuarios(), HttpStatus.OK);
     }
 
+    @GetMapping("/monedas/{id}")
+    public ResponseEntity<Integer> getMonedasUsuario(@PathVariable int id) {
+        try {
+            Usuario usuario = usuarioService.getUsuarioById(id);
+            return ResponseEntity.ok(usuario.getMoneda());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
 }

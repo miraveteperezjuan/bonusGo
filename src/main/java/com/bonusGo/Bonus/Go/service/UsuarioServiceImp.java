@@ -128,6 +128,14 @@ public class UsuarioServiceImp implements UsuarioService {
     }
 
     @Override
+    public Integer getMonedasById(int id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        return usuario.getMoneda();
+    }
+
+
+    @Override
     public boolean existsByEmail(String email) {
         return usuarioRepository.existsByCorreo(email);
     }
