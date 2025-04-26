@@ -17,7 +17,8 @@ public class JwtUtil {
     @Value("${app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    public String createToken(Authentication authentication) {
+    // nuevo el idUsuario
+    public String createToken(Authentication authentication, int idUsuario) {
         User userPrincipal = (User) authentication.getPrincipal();
 
         String rol = userPrincipal.getAuthorities().iterator().next().getAuthority(); // Ej: "ROLE_USER"
@@ -25,6 +26,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
                 .claim("rol", rol)
+                .claim("id", idUsuario)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -60,6 +62,16 @@ public class JwtUtil {
             System.err.println("JWT vacío o nulo: " + e.getMessage());
         }
         return null;
+    }
+
+    // metodo nuevo
+    public Integer getIdFromJwt(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("id", Integer.class);
     }
 
     public boolean validateJwtToken(String authToken) {

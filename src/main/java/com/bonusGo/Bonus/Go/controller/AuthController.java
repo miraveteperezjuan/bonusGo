@@ -40,6 +40,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // nuevo en String token el usuario.getId_Usuario()
     @PostMapping("/loginUser")
     public ResponseEntity<?> loginUser(@RequestBody UsuarioLoginRequest loginRequest) {
         Usuario usuario = userService.getlogin(loginRequest.getCorreo(), loginRequest.getPass());
@@ -55,10 +56,11 @@ public class AuthController {
                 )
         );
 
-        String token = jwtUtil.createToken(auth);
+        String token = jwtUtil.createToken(auth, usuario.getId_Usuario());
         return ResponseEntity.ok(new LoginResponse(token));
     }
 
+    // nuevo en String token el usuario.getId_Usuario()
     @PostMapping("/loginAdmin")
     public ResponseEntity<?> loginAdmin(@RequestBody UsuarioLoginRequest loginRequest) {
         Usuario usuario = userService.getlogin(loginRequest.getCorreo(), loginRequest.getPass());
@@ -74,7 +76,7 @@ public class AuthController {
                 )
         );
 
-        String token = jwtUtil.createToken(auth);
+        String token = jwtUtil.createToken(auth, usuario.getId_Usuario());
         return ResponseEntity.ok(new LoginResponse(token));
     }
 
@@ -143,9 +145,12 @@ public class AuthController {
         String correo = jwtUtil.getUsernameFromJwt(token);
         String rol = jwtUtil.getRolFromJwt(token);
 
-        Map<String, String> response = new HashMap<>();
+        // nuevo
+        Integer id = jwtUtil.getIdFromJwt(token);
+        Map<String, Object> response = new HashMap<>();
         response.put("correo", correo);
         response.put("rol", rol);
+        response.put("id", id);
 
         return ResponseEntity.ok(response);
     }
