@@ -58,14 +58,15 @@ public class ObjetivoController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Objetivo> actualizarMonedas(@PathVariable int id, @RequestParam int monedas) {
+    public ResponseEntity<Objetivo> actualizarObjetivo(@PathVariable int id, @RequestBody Objetivo objetivo) {
         try {
-            Objetivo objetivo = objetivoService.actualizarMonedas(id, monedas);
-            return new ResponseEntity<>(objetivo, HttpStatus.OK);
+            Objetivo actualizado = objetivoService.actualizar(id, objetivo);
+            return new ResponseEntity<>(actualizado, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
     //Tema isEnables
     @GetMapping("/habilitados")

@@ -8,7 +8,7 @@ public interface ObjetivoService {
 
     Objetivo registObjetivo(Objetivo objetivo);
 
-    Objetivo actualizarMonedas(int id, int monedas);
+    Objetivo actualizar(int id, Objetivo nuevoObjetivo);
 
     void eliminarObjetivo(int id);
 

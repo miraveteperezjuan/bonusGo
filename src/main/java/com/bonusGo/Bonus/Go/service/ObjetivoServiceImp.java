@@ -48,11 +48,16 @@ public class ObjetivoServiceImp implements ObjetivoService {
     }
 
     @Override
-    public Objetivo actualizarMonedas(int id, int monedas) {
-        Objetivo objetivo = objetivoRepository.findById(id)
+    public Objetivo actualizar(int id, Objetivo nuevoObjetivo) {
+        Objetivo objetivoExistente = objetivoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Objetivo no encontrado"));
-        objetivo.setMonedas(monedas);
-        return objetivoRepository.save(objetivo);
+
+        objetivoExistente.setNombre(nuevoObjetivo.getNombre());
+        objetivoExistente.setDescripcion(nuevoObjetivo.getDescripcion());
+        objetivoExistente.setCategoria(nuevoObjetivo.getCategoria());
+        objetivoExistente.setMonedas(nuevoObjetivo.getMonedas());
+
+        return objetivoRepository.save(objetivoExistente);
     }
 
     @Override
