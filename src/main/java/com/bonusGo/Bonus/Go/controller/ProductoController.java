@@ -1,36 +1,38 @@
 package com.bonusGo.Bonus.Go.controller;
 
 import com.bonusGo.Bonus.Go.model.Producto;
+import com.bonusGo.Bonus.Go.model.Tipo;
+import com.bonusGo.Bonus.Go.service.ImagenService;
 import com.bonusGo.Bonus.Go.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("producto")
+@RequestMapping("/producto")
 public class ProductoController {
-
-    //http://localhost:8080/producto/
 
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private ImagenService imagenService;
+
     @GetMapping("/error")
-    public String getError(){
+    public String getError() {
         return "Error en la app";
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<Producto> registrarProducto(@RequestBody Producto producto) {
-        try {
-            Producto nuevoProducto = productoService.registrarProducto(producto);
-            return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Producto> registrarProducto(@RequestBody Producto producto)
+    {
+
+        Producto nuevoProducto = productoService.registrarProducto(producto);
+        return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/eliminar/{id}")
@@ -40,6 +42,35 @@ public class ProductoController {
             return new ResponseEntity<>("Producto eliminado correctamente", HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Producto no encontrado", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/actualizarProducto/{id}")
+    public ResponseEntity<Producto> actualizarProducto(
+            @PathVariable int id,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("coste") int coste,
+            @RequestParam("tipo") Tipo tipo,
+            @RequestParam(value = "imagen", required = false) MultipartFile imagenFile
+    ) {
+        try {
+            Producto productoExistente = productoService.buscarProductoId(id);
+
+            productoExistente.setNombre(nombre);
+            productoExistente.setDescripcion(descripcion);
+            productoExistente.setCoste(coste);
+            productoExistente.setTipo(tipo);
+
+            if (imagenFile != null && !imagenFile.isEmpty()) {
+                String urlImagen = imagenService.guardarImagen(imagenFile);
+                productoExistente.setImagen(urlImagen);
+            }
+
+            Producto productoActualizado = productoService.registrarProducto(productoExistente);
+            return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -69,34 +100,28 @@ public class ProductoController {
         }
     }
 
-    //Tema del isEnabled
-    // Obtener productos habilitados
     @GetMapping("/habilitados")
     public ResponseEntity<List<Producto>> listarHabilitados() {
         return new ResponseEntity<>(productoService.listarHabilitados(), HttpStatus.OK);
     }
 
-    // Obtener productos deshabilitados
     @GetMapping("/deshabilitados")
     public ResponseEntity<List<Producto>> listarDeshabilitados() {
         return new ResponseEntity<>(productoService.listarDeshabilitados(), HttpStatus.OK);
     }
 
-    // Deshabilitar producto
     @PutMapping("/deshabilitar/{id}")
     public ResponseEntity<String> deshabilitar(@PathVariable int id) {
         productoService.setEstado(id, false);
         return ResponseEntity.ok("Producto deshabilitado");
     }
 
-    // Rehabilitar producto
     @PutMapping("/habilitar/{id}")
     public ResponseEntity<String> habilitar(@PathVariable int id) {
         productoService.setEstado(id, true);
         return ResponseEntity.ok("Producto habilitado");
     }
 
-    //Canjear los productos para el user
     @PutMapping("/canjear/{idProducto}")
     public ResponseEntity<String> canjearProducto(@PathVariable int idProducto, @RequestParam int idUsuario) {
         try {
@@ -112,5 +137,5 @@ public class ProductoController {
         List<Producto> disponibles = productoService.listarDisponiblesParaUsuario(idUsuario);
         return ResponseEntity.ok(disponibles);
     }
-
 }
+

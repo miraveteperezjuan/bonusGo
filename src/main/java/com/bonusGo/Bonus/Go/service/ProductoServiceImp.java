@@ -31,6 +31,11 @@ public class ProductoServiceImp implements ProductoService {
     }
 
     @Override
+    public Producto actualizarProducto(Producto producto) {
+        return productoRepository.save(producto);
+    }
+
+    @Override
     public Producto actualizarMonedas(int id, int coste) {
         Producto producto = productoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto inexistente"));
         producto.setCoste(coste);

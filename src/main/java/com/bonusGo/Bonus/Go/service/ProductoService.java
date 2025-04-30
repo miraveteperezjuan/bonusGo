@@ -8,6 +8,8 @@ public interface ProductoService {
 
     Producto registrarProducto(Producto producto);
 
+    Producto actualizarProducto(Producto producto);
+
     Producto actualizarMonedas(int id, int coste);
 
     void eliminarProducto(int id);

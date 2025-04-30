@@ -128,6 +128,22 @@ public class UsuarioServiceImp implements UsuarioService {
     }
 
     @Override
+    public Usuario updateUsuario(int id, Usuario usuarioActualizado) {
+        Usuario existente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+
+        // Actualizar los campos necesarios
+        existente.setNombre(usuarioActualizado.getNombre());
+        existente.setCorreo(usuarioActualizado.getCorreo());
+        existente.setTelefono(usuarioActualizado.getTelefono());
+        existente.setRol(usuarioActualizado.getRol());
+        existente.setMoneda(usuarioActualizado.getMoneda());
+
+        return usuarioRepository.save(existente);
+    }
+
+
+    @Override
     public Integer getMonedasById(int id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

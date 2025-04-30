@@ -28,6 +28,8 @@ public class Producto {
     private int coste;
     @Column(nullable = false)
     private boolean isEnabled = true;
+    @Column
+    private String imagen;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "transacciones", joinColumns = @JoinColumn(name = "id_Producto"),
@@ -92,5 +94,12 @@ public class Producto {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }
