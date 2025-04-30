@@ -45,33 +45,14 @@ public class ProductoController {
         }
     }
 
-    @PutMapping("/actualizarProducto/{id}")
-    public ResponseEntity<Producto> actualizarProducto(
-            @PathVariable int id,
-            @RequestParam("nombre") String nombre,
-            @RequestParam("descripcion") String descripcion,
-            @RequestParam("coste") int coste,
-            @RequestParam("tipo") Tipo tipo,
-            @RequestParam(value = "imagen", required = false) MultipartFile imagenFile
-    ) {
-        try {
-            Producto productoExistente = productoService.buscarProductoId(id);
-
-            productoExistente.setNombre(nombre);
-            productoExistente.setDescripcion(descripcion);
-            productoExistente.setCoste(coste);
-            productoExistente.setTipo(tipo);
-
-            if (imagenFile != null && !imagenFile.isEmpty()) {
-                String urlImagen = imagenService.guardarImagen(imagenFile);
-                productoExistente.setImagen(urlImagen);
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Producto> actualizarProducto(@PathVariable int id, @RequestBody Producto producto){
+            try{
+                Producto actualizado = productoService.actualizar(id, producto);
+                return new ResponseEntity<>(actualizado, HttpStatus.OK);
+            } catch (RuntimeException e){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-
-            Producto productoActualizado = productoService.registrarProducto(productoExistente);
-            return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
     }
 
     @GetMapping("/getall")
@@ -90,15 +71,6 @@ public class ProductoController {
         }
     }
 
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Producto> actualizarMonedas(@PathVariable int id, @RequestParam int coste) {
-        try {
-            Producto productoActualizado = productoService.actualizarMonedas(id, coste);
-            return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
 
     @GetMapping("/habilitados")
     public ResponseEntity<List<Producto>> listarHabilitados() {

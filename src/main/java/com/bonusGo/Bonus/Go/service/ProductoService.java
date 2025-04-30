@@ -8,9 +8,7 @@ public interface ProductoService {
 
     Producto registrarProducto(Producto producto);
 
-    Producto actualizarProducto(Producto producto);
-
-    Producto actualizarMonedas(int id, int coste);
+    Producto actualizar(int id, Producto nuevoProducto);
 
     void eliminarProducto(int id);
 

@@ -31,15 +31,17 @@ public class ProductoServiceImp implements ProductoService {
     }
 
     @Override
-    public Producto actualizarProducto(Producto producto) {
-        return productoRepository.save(producto);
-    }
+    public Producto actualizar(int id, Producto nuevoProducto) {
+        Producto productoExistente = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-    @Override
-    public Producto actualizarMonedas(int id, int coste) {
-        Producto producto = productoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto inexistente"));
-        producto.setCoste(coste);
-        return productoRepository.save(producto);
+        productoExistente.setNombre(nuevoProducto.getNombre());
+        productoExistente.setDescripcion(nuevoProducto.getDescripcion());
+        productoExistente.setTipo(nuevoProducto.getTipo());
+        productoExistente.setCoste(nuevoProducto.getCoste());
+        productoExistente.setImagen(nuevoProducto.getImagen());
+
+        return productoRepository.save(productoExistente);
     }
 
     @Override
