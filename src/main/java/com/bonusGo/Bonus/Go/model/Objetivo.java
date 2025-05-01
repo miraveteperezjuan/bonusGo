@@ -1,49 +1,45 @@
 package com.bonusGo.Bonus.Go.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "objetivos")
 public class Objetivo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_objetivo;
+    @Column(name = "id_objetivo")
+    private int idObjetivo;
+
     @Column(length = 30)
     private String nombre;
+
     @Column
     private String descripcion;
+
     @Column(length = 4)
     private Integer monedas;
-    @Column(nullable = false)
-    private boolean isEnabled  = true;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "ganancia_monedas", joinColumns = @JoinColumn(name = "id_objetivo"),
-            inverseJoinColumns = @JoinColumn(name = "id_Usuario"))
+    @OneToMany(mappedBy = "objetivo", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Usuario> usuarios;
+    private List<GananciaMonedas> gananciaMonedas;
 
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
-    public int getId_objetivo() {
-        return id_objetivo;
+    public int getIdObjetivo() {
+        return idObjetivo;
     }
 
-    public void setId_objetivo(int id_objetivo) {
-        this.id_objetivo = id_objetivo;
+    public void setIdObjetivo(int idObjetivo) {
+        this.idObjetivo = idObjetivo;
     }
 
     public String getNombre() {
@@ -70,12 +66,12 @@ public class Objetivo {
         this.monedas = monedas;
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
+    public List<GananciaMonedas> getGananciaMonedas() {
+        return gananciaMonedas;
     }
 
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
+    public void setGananciaMonedas(List<GananciaMonedas> gananciaMonedas) {
+        this.gananciaMonedas = gananciaMonedas;
     }
 
     public Categoria getCategoria() {
@@ -84,13 +80,5 @@ public class Objetivo {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
     }
 }

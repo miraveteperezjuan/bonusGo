@@ -38,6 +38,11 @@ public class Usuario implements UserDetails {
     @JsonIgnore
     private Rol rol;
 
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<GananciaMonedas> gananciaMonedas;
+
     public Usuario(int id_Usuario, String nombre, String apellido, String correo, String telefono, String password, Rol rol) {
         this.id_Usuario = id_Usuario;
         this.nombre = nombre;
@@ -140,5 +145,13 @@ public class Usuario implements UserDetails {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public List<GananciaMonedas> getGananciaMonedas() {
+        return gananciaMonedas;
+    }
+
+    public void setGananciaMonedas(List<GananciaMonedas> gananciaMonedas) {
+        this.gananciaMonedas = gananciaMonedas;
     }
 }

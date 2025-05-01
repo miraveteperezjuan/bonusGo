@@ -1,7 +1,7 @@
 package com.bonusGo.Bonus.Go.service;
 
 import com.bonusGo.Bonus.Go.model.*;
-import com.bonusGo.Bonus.Go.repository.GananciaRepository;
+import com.bonusGo.Bonus.Go.repository.GananciaMonedasRepository;
 import com.bonusGo.Bonus.Go.repository.ObjetivoRepository;
 import com.bonusGo.Bonus.Go.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class ObjetivoServiceImp implements ObjetivoService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private GananciaRepository gananciaRepository;
+    private GananciaMonedasRepository gananciaRepository;
 
     @Override
     public Objetivo registObjetivo(Objetivo objetivo) {
@@ -59,59 +59,4 @@ public class ObjetivoServiceImp implements ObjetivoService {
 
         return objetivoRepository.save(objetivoExistente);
     }
-
-    @Override
-    public List<Objetivo> listarHabilitados() {
-        return objetivoRepository.findByIsEnabledTrue();
-    }
-
-    @Override
-    public List<Objetivo> listarDeshabilitados() {
-        return objetivoRepository.findByIsEnabledFalse();
-    }
-
-    @Override
-    public void setEstado(int id, boolean habilitado) {
-        Objetivo objetivo = objetivoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Objetivo no encontrado"));
-        objetivo.setEnabled(habilitado);
-        objetivoRepository.save(objetivo);
-    }
-
-    @Override
-    public void canjearObjetivo(int idObjetivo, int idUsuario) {
-        Objetivo objetivo = objetivoRepository.findById(idObjetivo)
-                .orElseThrow(() -> new RuntimeException("Objetivo no encontrado"));
-
-        if (!objetivo.isEnabled()) {
-            throw new RuntimeException("Objetivo no disponible");
-        }
-
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        usuario.setMoneda(usuario.getMoneda() + objetivo.getMonedas());
-
-        GananciaMonedas gananciaMonedas = new GananciaMonedas();
-        gananciaMonedas.setUsuario(usuario);
-        gananciaMonedas.setObjetivo(objetivo);
-        gananciaMonedas.setCanjeado(true);
-
-        //objetivo.getUsuarios().add(usuario);
-        gananciaRepository.save(gananciaMonedas);
-        usuarioRepository.save(usuario);
-        //objetivoRepository.save(objetivo);
-    }
-
-    public List<Objetivo> listarDisponiblesParaUsuario(int userId) {
-        List<Objetivo> todos = objetivoRepository.findByIsEnabledTrue();
-        List<Objetivo> yaCanjeados = gananciaRepository.findObjetivosCanjeadosByUsuarioId(userId);
-
-        return todos.stream()
-                .filter(p -> !yaCanjeados.contains(p))
-                .toList();
-    }
-
-
-
 }

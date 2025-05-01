@@ -90,6 +90,7 @@ public class SecurityConfig {
 
 
     // Configuración personalizada de CORS
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Frontend en Vite
