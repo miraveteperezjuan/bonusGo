@@ -27,7 +27,7 @@ public class Objetivo {
     @Column(length = 4)
     private Integer monedas;
 
-    @OneToMany(mappedBy = "objetivo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "objetivo", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<GananciaMonedas> gananciaMonedas;
 

@@ -15,15 +15,4 @@ public interface ProductoService {
     List<Producto> listaProductos();
 
     Producto buscarProductoId(int id);
-
-    List<Producto> listarHabilitados();
-
-    List<Producto> listarDeshabilitados();
-
-    List<Producto> listarDisponiblesParaUsuario(int userId);
-
-    void setEstado(int id, boolean habilitado);
-
-    void canjearProducto(int id_Producto, int id_Usuario);
-
 }

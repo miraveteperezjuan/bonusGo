@@ -26,16 +26,12 @@ public class Producto {
     private String descripcion;
     @Column(length = 4)
     private int coste;
-    @Column(nullable = false)
-    private boolean isEnabled = true;
     @Column
     private String imagen;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "transacciones", joinColumns = @JoinColumn(name = "id_Producto"),
-            inverseJoinColumns = @JoinColumn(name = "id_Usuario"))
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Usuario> usuarios;
+    private List<Transaccion> transacciones;
 
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
@@ -72,28 +68,12 @@ public class Producto {
         this.coste = coste;
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
-    }
-
     public Tipo getTipo() {
         return tipo;
     }
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
     }
 
     public String getImagen() {
