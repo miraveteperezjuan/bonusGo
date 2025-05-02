@@ -27,6 +27,9 @@ public class Objetivo {
     @Column(length = 4)
     private Integer monedas;
 
+    @Column
+    private String imagen;
+
     @OneToMany(mappedBy = "objetivo", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<GananciaMonedas> gananciaMonedas;
@@ -80,5 +83,13 @@ public class Objetivo {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }
