@@ -3,8 +3,11 @@ package com.bonusGo.Bonus.Go.service;
 import com.bonusGo.Bonus.Go.model.Rol;
 import com.bonusGo.Bonus.Go.model.Usuario;
 import com.bonusGo.Bonus.Go.payload.LoginResponse;
+import com.bonusGo.Bonus.Go.repository.GananciaMonedasRepository;
 import com.bonusGo.Bonus.Go.repository.RolRepository;
+import com.bonusGo.Bonus.Go.repository.TransaccionRepository;
 import com.bonusGo.Bonus.Go.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,12 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private TransaccionRepository transaccionRepository;
+
+    @Autowired
+    private GananciaMonedasRepository gananciasRepository;
 
     @Autowired
     private RolRepository rolRepository;
@@ -65,6 +74,8 @@ public class UsuarioServiceImp implements UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+
+
     @Override
     public List<Usuario> getUsuarioCorreo(String correo) {
         List<Usuario> usuarios = usuarioRepository.getByCorreo(correo);
@@ -97,8 +108,27 @@ public class UsuarioServiceImp implements UsuarioService {
         }
 
         Usuario usuario = usuarioOptional.get();
+        //gananciasRepository.deleteByUsuarioId_Usuario(id);
+        //transaccionRepository.deleteByUsuarioId_Usuario(id);
         usuarioRepository.deleteById(id);
     }
+
+
+
+    /*@Transactional
+    public void deleteUsuario(int id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        transaccionRepository.deleteByUsuarioId(id);  // ✅ esto es clave
+        usuarioRepository.deleteById(id);
+    }
+
+        transaccionRepository.deleteByUsuarioId(id); // ✅ primero las transacciones
+        usuarioRepository.deleteById(id);            // ✅ luego el usuario
+    }*/
+
 
     @Override
     public Usuario updateUsuarioContacto(int id, String nuevoCorreo, String nuevoTelefono) {
@@ -155,4 +185,6 @@ public class UsuarioServiceImp implements UsuarioService {
     public boolean existsByEmail(String email) {
         return usuarioRepository.existsByCorreo(email);
     }
+
+
 }

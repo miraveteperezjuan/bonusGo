@@ -28,4 +28,6 @@ public interface GananciaMonedasRepository extends JpaRepository<GananciaMonedas
     @Query("SELECT gm.usuario.id_Usuario FROM GananciaMonedas gm WHERE gm.objetivo.idObjetivo = :idObjetivo AND gm.habilitado = true")
     List<Integer> findUsuariosConObjetivoHabilitado(@Param("idObjetivo") int idObjetivo);
 
+    //void deleteByUsuarioId_Usuario(int idUsuario);
+
 }

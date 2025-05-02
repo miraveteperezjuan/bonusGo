@@ -1,5 +1,6 @@
 package com.bonusGo.Bonus.Go.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class Rol implements GrantedAuthority {
     private String permisos;
 
     @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Usuario> usuarios;
 
     public Rol(int id_Rol, String nombre, String descripcion, String permisos, List<Usuario> usuarios) {

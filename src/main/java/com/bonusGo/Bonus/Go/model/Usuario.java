@@ -1,4 +1,5 @@
 package com.bonusGo.Bonus.Go.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class Usuario implements UserDetails {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_Rol")
-    @JsonIgnore
+    @JsonBackReference
     private Rol rol;
 
 

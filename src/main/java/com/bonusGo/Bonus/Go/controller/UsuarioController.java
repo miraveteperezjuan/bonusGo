@@ -5,6 +5,7 @@ import com.bonusGo.Bonus.Go.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/error")
     public String getError() {
@@ -95,7 +99,6 @@ public class UsuarioController {
         Usuario actualizado = usuarioService.updateUsuario(id, usuarioActualizado);
         return ResponseEntity.ok(actualizado);
     }
-
 
 
 }
