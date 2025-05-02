@@ -19,6 +19,7 @@ public class Transaccion {
     @JoinColumn(name = "ID_Producto")
     private Producto producto;
 
+    @Column(name = "canjeado")
     private boolean canjeado;
 
     public Transaccion(Usuario usuario, int idTransaccion, Producto producto, boolean canjeado) {

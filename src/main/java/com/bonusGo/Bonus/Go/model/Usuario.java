@@ -44,6 +44,10 @@ public class Usuario implements UserDetails {
     @JsonIgnore
     private List<GananciaMonedas> gananciaMonedas;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Transaccion> transacciones;
+
     public Usuario(int id_Usuario, String nombre, String apellido, String correo, String telefono, String password, Rol rol) {
         this.id_Usuario = id_Usuario;
         this.nombre = nombre;

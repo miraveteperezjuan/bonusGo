@@ -70,44 +70,5 @@ public class ProductoController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-
-    @GetMapping("/habilitados")
-    public ResponseEntity<List<Producto>> listarHabilitados() {
-        return new ResponseEntity<>(productoService.listarHabilitados(), HttpStatus.OK);
-    }
-
-    @GetMapping("/deshabilitados")
-    public ResponseEntity<List<Producto>> listarDeshabilitados() {
-        return new ResponseEntity<>(productoService.listarDeshabilitados(), HttpStatus.OK);
-    }
-
-    @PutMapping("/deshabilitar/{id}")
-    public ResponseEntity<String> deshabilitar(@PathVariable int id) {
-        productoService.setEstado(id, false);
-        return ResponseEntity.ok("Producto deshabilitado");
-    }
-
-    @PutMapping("/habilitar/{id}")
-    public ResponseEntity<String> habilitar(@PathVariable int id) {
-        productoService.setEstado(id, true);
-        return ResponseEntity.ok("Producto habilitado");
-    }
-
-    @PutMapping("/canjear/{idProducto}")
-    public ResponseEntity<String> canjearProducto(@PathVariable int idProducto, @RequestParam int idUsuario) {
-        try {
-            productoService.canjearProducto(idProducto, idUsuario);
-            return ResponseEntity.ok("Producto canjeado con éxito.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/disponibles/{idUsuario}")
-    public ResponseEntity<List<Producto>> productosDisponibles(@PathVariable int idUsuario) {
-        List<Producto> disponibles = productoService.listarDisponiblesParaUsuario(idUsuario);
-        return ResponseEntity.ok(disponibles);
-    }
 }
 
