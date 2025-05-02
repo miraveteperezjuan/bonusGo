@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface TransaccionRepository extends JpaRepository<Transaccion, Integer> {
 
+    // Para ver que productos ha canjeado un usuario concreto (historial)
     @Query("SELECT t.producto FROM Transaccion t WHERE t.usuario.id_Usuario = :userId AND t.canjeado = true")
     List<Producto> findProductosCanjeadosByUsuarioId(int userId);
 
@@ -25,4 +26,8 @@ public interface TransaccionRepository extends JpaRepository<Transaccion, Intege
 
 
 
+
+    // Verifica si un usuario ya ha canjeado un producto específico
+    @Query("SELECT t FROM Transaccion t WHERE t.usuario.id_Usuario = :userId AND t.producto.id_Producto = :productoId AND t.canjeado = true")
+    Transaccion findTransaccionCanjeadaPorUsuarioYProducto(int userId, int productoId);
 }
