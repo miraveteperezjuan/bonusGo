@@ -46,9 +46,7 @@ public class GananciaMonedasController {
 
     // Endpoint para marcar un objetivo como reclamado
     @PostMapping("/reclamar")
-    public void reclamarObjetivo(
-            @RequestParam int idUsuario,
-            @RequestParam int idObjetivo) {
+    public void reclamarObjetivo(@RequestParam int idUsuario, @RequestParam int idObjetivo) {
 
         gananciaMonedasService.marcarObjetivoComoReclamado(idUsuario, idObjetivo);
     }
