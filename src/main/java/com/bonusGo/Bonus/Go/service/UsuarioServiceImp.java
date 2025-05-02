@@ -114,7 +114,6 @@ public class UsuarioServiceImp implements UsuarioService {
     }
 
 
-
     /*@Transactional
     public void deleteUsuario(int id) {
         if (!usuarioRepository.existsById(id)) {

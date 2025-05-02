@@ -91,7 +91,7 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/usuario/actualizar/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(
             @PathVariable int id,
             @RequestBody Usuario usuarioActualizado
