@@ -128,7 +128,10 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(rol.getNombre()));
+        if (rol != null && rol.getNombre() != null) {
+            return List.of(new SimpleGrantedAuthority(rol.getNombre()));
+        }
+        return List.of();
     }
 
     public String getPassword() {
