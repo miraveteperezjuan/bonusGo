@@ -139,6 +139,7 @@ public class UsuarioServiceImp implements UsuarioService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
 
         existente.setNombre(usuarioActualizado.getNombre());
+        existente.setApellido(usuarioActualizado.getApellido());
         existente.setCorreo(usuarioActualizado.getCorreo());
         existente.setTelefono(usuarioActualizado.getTelefono());
         existente.setRol(usuarioActualizado.getRol());
@@ -146,6 +147,20 @@ public class UsuarioServiceImp implements UsuarioService {
 
         return usuarioRepository.save(existente);
     }
+
+    @Override
+    public Usuario updateUsuarioPerfil(int id, Usuario usuarioActualizado) {
+        Usuario existente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+
+        existente.setNombre(usuarioActualizado.getNombre());
+        existente.setApellido(usuarioActualizado.getApellido());
+        existente.setCorreo(usuarioActualizado.getCorreo());
+        existente.setTelefono(usuarioActualizado.getTelefono());
+
+        return usuarioRepository.save(existente);
+    }
+
 
     @Override
     public Integer getMonedasById(int id) {

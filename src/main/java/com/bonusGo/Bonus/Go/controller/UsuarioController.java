@@ -100,5 +100,14 @@ public class UsuarioController {
         return ResponseEntity.ok(actualizado);
     }
 
+    @PutMapping("/" +
+            "/{id}")
+    public ResponseEntity<Usuario> actualizarUsuarioPerfil(
+            @PathVariable int id,
+            @RequestBody Usuario usuarioActualizado
+    ) {
+        Usuario actualizado = usuarioService.updateUsuarioPerfil(id, usuarioActualizado);
+        return ResponseEntity.ok(actualizado);
+    }
 
 }
