@@ -44,7 +44,6 @@ public class UsuarioServiceImp implements UsuarioService {
                 return usuario;
             }
         }
-
         return null;
     }
 
@@ -73,8 +72,6 @@ public class UsuarioServiceImp implements UsuarioService {
         }
         return usuarioRepository.save(usuario);
     }
-
-
 
     @Override
     public List<Usuario> getUsuarioCorreo(String correo) {
@@ -106,28 +103,9 @@ public class UsuarioServiceImp implements UsuarioService {
         if (!usuarioOptional.isPresent()) {
             throw new RuntimeException("Usuario no encontrado");
         }
-
         Usuario usuario = usuarioOptional.get();
-        //gananciasRepository.deleteByUsuarioId_Usuario(id);
-        //transaccionRepository.deleteByUsuarioId_Usuario(id);
         usuarioRepository.deleteById(id);
     }
-
-
-    /*@Transactional
-    public void deleteUsuario(int id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-
-        transaccionRepository.deleteByUsuarioId(id);  // ✅ esto es clave
-        usuarioRepository.deleteById(id);
-    }
-
-        transaccionRepository.deleteByUsuarioId(id); // ✅ primero las transacciones
-        usuarioRepository.deleteById(id);            // ✅ luego el usuario
-    }*/
-
 
     @Override
     public Usuario updateUsuarioContacto(int id, String nuevoCorreo, String nuevoTelefono) {
@@ -144,7 +122,6 @@ public class UsuarioServiceImp implements UsuarioService {
         if (nuevoTelefono != null && !nuevoTelefono.isEmpty()) {
             usuario.setTelefono(nuevoTelefono);
         }
-
         return usuarioRepository.save(usuario);
     }
 
@@ -161,7 +138,6 @@ public class UsuarioServiceImp implements UsuarioService {
         Usuario existente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
 
-        // Actualizar los campos necesarios
         existente.setNombre(usuarioActualizado.getNombre());
         existente.setCorreo(usuarioActualizado.getCorreo());
         existente.setTelefono(usuarioActualizado.getTelefono());
@@ -171,7 +147,6 @@ public class UsuarioServiceImp implements UsuarioService {
         return usuarioRepository.save(existente);
     }
 
-
     @Override
     public Integer getMonedasById(int id) {
         Usuario usuario = usuarioRepository.findById(id)
@@ -179,11 +154,8 @@ public class UsuarioServiceImp implements UsuarioService {
         return usuario.getMoneda();
     }
 
-
     @Override
     public boolean existsByEmail(String email) {
         return usuarioRepository.existsByCorreo(email);
     }
-
-
 }

@@ -1,7 +1,5 @@
 package com.bonusGo.Bonus.Go.payload;
 
-import com.bonusGo.Bonus.Go.model.Usuario;
-
 public class LoginResponse {
 
     private String token;

@@ -16,17 +16,6 @@ public interface TransaccionRepository extends JpaRepository<Transaccion, Intege
     @Query("SELECT t.producto FROM Transaccion t WHERE t.usuario.id_Usuario = :userId AND t.canjeado = true")
     List<Producto> findProductosCanjeadosByUsuarioId(int userId);
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM Transaccion t WHERE t.usuario.id_Usuario = :id")
-    void deleteByUsuarioId(@Param("id") int id);
-
-
-    //boolean existsByUsuario_IdUsuarioAndProducto_IdProducto(int idU, int idP);
-
-
-
-
     // Verifica si un usuario ya ha canjeado un producto específico
     @Query("SELECT t FROM Transaccion t WHERE t.usuario.id_Usuario = :userId AND t.producto.id_Producto = :productoId AND t.canjeado = true")
     Transaccion findTransaccionCanjeadaPorUsuarioYProducto(int userId, int productoId);

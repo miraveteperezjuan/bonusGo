@@ -58,8 +58,6 @@ public class SecurityConfig {
                         .requestMatchers("/producto/deshabilitar/**", "/producto/habilitar/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/objetivos/deshabilitar/**", "/objetivos/habilitar/**").hasAuthority("ROLE_ADMIN")
 
-
-
                         // Rutas accesibles por USER o ADMIN
                         .requestMatchers("/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/usuario/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
@@ -87,7 +85,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     // Configuración personalizada de CORS
     @Bean

@@ -1,14 +1,11 @@
 package com.bonusGo.Bonus.Go.controller;
 
 import com.bonusGo.Bonus.Go.model.Producto;
-import com.bonusGo.Bonus.Go.model.Tipo;
-import com.bonusGo.Bonus.Go.service.ImagenService;
 import com.bonusGo.Bonus.Go.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,9 +15,6 @@ public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
-
-    @Autowired
-    private ImagenService imagenService;
 
     @GetMapping("/error")
     public String getError() {
