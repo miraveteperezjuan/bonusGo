@@ -126,10 +126,13 @@ public class UsuarioServiceImp implements UsuarioService {
     }
 
     @Override
-    public Usuario updateMonedas(int id, int nuevaMoneda) {
+    public Usuario updateMonedas(int id, int monedas) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        usuario.setMoneda(nuevaMoneda);
+
+        int nuevasMonedas = usuario.getMoneda() + monedas;
+
+        usuario.setMoneda(nuevasMonedas);
         return usuarioRepository.save(usuario);
     }
 
