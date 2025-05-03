@@ -23,7 +23,7 @@ public interface UsuarioService {
 
     Usuario updateUsuarioContacto(int id, String nuevoCorreo, String nuevoTelefono);
 
-    Usuario updateMonedas(int id, int nuevaMoneda);
+    Usuario updateMonedas(int id, int monedas);
 
     Usuario updateUsuario(int id, Usuario usuario);
 

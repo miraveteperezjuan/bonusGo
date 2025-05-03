@@ -26,11 +26,9 @@ public class GananciaMonedasServiceImp implements GananciaMonedasService{
 
     @Override
     public GananciaMonedas habilitarObjetivoParaUsuario(int idUsuario, int idObjetivo) {
-        // Buscar al usuario por ID
         Usuario usuarioEncontrado = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        // Buscar el objetivo por ID
         Objetivo objetivoEncontrado = objetivoRepository.findById(idObjetivo)
                 .orElseThrow(() -> new IllegalArgumentException("Objetivo no encontrado"));
 
@@ -46,7 +44,6 @@ public class GananciaMonedasServiceImp implements GananciaMonedasService{
             relacionUsuarioObjetivo.setHabilitado(true);
         }
 
-        // relación actualizada
         return gananciaMonedasRepository.save(relacionUsuarioObjetivo);
     }
 

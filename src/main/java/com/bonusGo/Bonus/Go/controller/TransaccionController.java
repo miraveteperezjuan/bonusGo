@@ -2,7 +2,10 @@ package com.bonusGo.Bonus.Go.controller;
 
 import com.bonusGo.Bonus.Go.model.Producto;
 import com.bonusGo.Bonus.Go.model.Transaccion;
+import com.bonusGo.Bonus.Go.repository.ProductoRepository;
+import com.bonusGo.Bonus.Go.service.ProductoService;
 import com.bonusGo.Bonus.Go.service.TransaccionService;
+import com.bonusGo.Bonus.Go.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +20,23 @@ public class TransaccionController {
     @Autowired
     private TransaccionService transaccionService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private ProductoService productoService;
+
     @PostMapping("/canjear")
-    public Transaccion canjearProducto(@RequestParam int idUsuario, @RequestParam int idProducto) {
-        return transaccionService.canjearProducto(idUsuario, idProducto);
+    public ResponseEntity<?> canjearProducto(@RequestParam int idUsuario, @RequestParam int idProducto) {
+        try {
+            transaccionService.canjearProducto(idUsuario, idProducto);
+            return new ResponseEntity<>("Producto canjeado con éxito", HttpStatus.OK);
+        } catch (RuntimeException ex) {
+            // Si se lanza una RuntimeException (por ejemplo, no hay suficientes monedas o ya se canjeó el producto)
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
 
     // historial
     @GetMapping("/canjeados/{idUsuario}")

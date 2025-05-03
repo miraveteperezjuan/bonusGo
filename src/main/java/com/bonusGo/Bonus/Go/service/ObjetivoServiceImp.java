@@ -44,7 +44,7 @@ public class ObjetivoServiceImp implements ObjetivoService {
 
     @Override
     public Objetivo buscarObjetivo(int id) {
-        return objetivoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        return objetivoRepository.findById(id).orElseThrow(() -> new RuntimeException("Objetivo no encontrado"));
     }
 
     @Override

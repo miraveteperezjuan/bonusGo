@@ -1,7 +1,11 @@
 package com.bonusGo.Bonus.Go.controller;
 
 import com.bonusGo.Bonus.Go.model.GananciaMonedas;
+import com.bonusGo.Bonus.Go.model.Objetivo;
+import com.bonusGo.Bonus.Go.repository.ObjetivoRepository;
 import com.bonusGo.Bonus.Go.service.GananciaMonedasService;
+import com.bonusGo.Bonus.Go.service.ObjetivoService;
+import com.bonusGo.Bonus.Go.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +18,12 @@ public class GananciaMonedasController {
 
     @Autowired
     private GananciaMonedasService gananciaMonedasService;
+
+    @Autowired
+    private ObjetivoService objetivoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PostMapping("/habilitar")
     public ResponseEntity<GananciaMonedas> cambiarEstadoObjetivo(@RequestBody GananciaMonedas ganancia) {
@@ -47,6 +57,11 @@ public class GananciaMonedasController {
     // Endpoint para marcar un objetivo como reclamado
     @PostMapping("/reclamar")
     public void reclamarObjetivo(@RequestParam int idUsuario, @RequestParam int idObjetivo) {
+        Objetivo objetivo = objetivoService.buscarObjetivo(idObjetivo);
+
+        int monedasGanadas = objetivo.getMonedas();
+
+        usuarioService.updateMonedas(idUsuario, monedasGanadas);
 
         gananciaMonedasService.marcarObjetivoComoReclamado(idUsuario, idObjetivo);
     }
