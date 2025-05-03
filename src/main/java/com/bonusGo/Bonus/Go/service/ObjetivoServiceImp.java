@@ -58,6 +58,7 @@ public class ObjetivoServiceImp implements ObjetivoService {
         objetivoExistente.setMonedas(nuevoObjetivo.getMonedas());
         objetivoExistente.setImagen(nuevoObjetivo.getImagen());
 
+        
         return objetivoRepository.save(objetivoExistente);
     }
 }
