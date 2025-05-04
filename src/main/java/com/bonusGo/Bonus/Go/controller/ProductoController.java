@@ -16,11 +16,6 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
-    @GetMapping("/error")
-    public String getError() {
-        return "Error en la app";
-    }
-
     @PostMapping("/registrar")
     public ResponseEntity<Producto> registrarProducto(@RequestBody Producto producto)
     {
@@ -53,16 +48,6 @@ public class ProductoController {
     public ResponseEntity<List<Producto>> listaProductos() {
         List<Producto> productos = productoService.listaProductos();
         return new ResponseEntity<>(productos, HttpStatus.OK);
-    }
-
-    @GetMapping("/buscar/{id}")
-    public ResponseEntity<Producto> buscarProductoId(@PathVariable int id) {
-        try {
-            Producto producto = productoService.buscarProductoId(id);
-            return new ResponseEntity<>(producto, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
     }
 }
 

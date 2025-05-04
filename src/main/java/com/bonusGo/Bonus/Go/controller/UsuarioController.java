@@ -20,17 +20,6 @@ public class UsuarioController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @GetMapping("/error")
-    public String getError() {
-        return "Error en la app";
-    }
-
-    // Buscar por correo (útil para perfil)
-    @GetMapping("/getCorreo")
-    public ResponseEntity<List<Usuario>> getUserMail(@RequestParam String correo) {
-        return new ResponseEntity<>(usuarioService.getUsuarioCorreo(correo), HttpStatus.OK);
-    }
-
     // Obtener usuario por ID
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable int id) {
@@ -53,42 +42,10 @@ public class UsuarioController {
         }
     }
 
-    // Actualizar correo o teléfono
-    @PutMapping("/contacto/{id}")
-    public ResponseEntity<Usuario> updateUsuarioContacto(
-            @PathVariable int id,
-            @RequestParam(required = false) String nuevoCorreo,
-            @RequestParam(required = false) String nuevoTelefono) {
-
-        Usuario usuario = usuarioService.updateUsuarioContacto(id, nuevoCorreo, nuevoTelefono);
-        return new ResponseEntity<>(usuario, HttpStatus.OK);
-    }
-
-    // Actualizar monedas (solo admin debería tener acceso)
-    @PutMapping("/updateMoneda/{id}")
-    public ResponseEntity<Usuario> updateMonedas(@PathVariable int id, @RequestParam int nuevaMoneda) {
-        try {
-            Usuario usuario = usuarioService.updateMonedas(id, nuevaMoneda);
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
     // Listar todos los usuarios (solo ADMIN debería acceder)
     @GetMapping("/getTodos")
     public ResponseEntity<List<Usuario>> getAllUsuarios() {
         return new ResponseEntity<>(usuarioService.getAllUsuarios(), HttpStatus.OK);
-    }
-
-    @GetMapping("/monedas/{id}")
-    public ResponseEntity<Integer> getMonedasUsuario(@PathVariable int id) {
-        try {
-            Usuario usuario = usuarioService.getUsuarioById(id);
-            return ResponseEntity.ok(usuario.getMoneda());
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
     }
 
     @PutMapping("/actualizar/{id}")

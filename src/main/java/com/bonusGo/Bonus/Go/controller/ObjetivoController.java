@@ -16,11 +16,6 @@ public class ObjetivoController {
     @Autowired
     private ObjetivoServiceImp objetivoService;
 
-    @GetMapping("/error")
-    public String getError(){
-        return "Error en la app";
-    }
-
     @PostMapping("/registrar")
     public ResponseEntity<Objetivo> registrarObjetivo(@RequestBody Objetivo objetivo) {
         try {
@@ -47,16 +42,6 @@ public class ObjetivoController {
         return new ResponseEntity<>(objetivos, HttpStatus.OK);
     }
 
-    @GetMapping("/buscar/{id}")
-    public ResponseEntity<Objetivo> buscarObjetivo(@PathVariable int id) {
-        try {
-            Objetivo objetivo = objetivoService.buscarObjetivo(id);
-            return new ResponseEntity<>(objetivo, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<Objetivo> actualizarObjetivo(@PathVariable int id, @RequestBody Objetivo objetivo) {
         try {
@@ -66,5 +51,4 @@ public class ObjetivoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }

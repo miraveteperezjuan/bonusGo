@@ -102,31 +102,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado.");
     }
 
-    @PostMapping("/registrarAdmin")
-    public ResponseEntity<?> registrarAdmin(@RequestBody RegisterRequest registerRequest) {
-        if (userService.existsByEmail(registerRequest.getCorreo())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El correo ya está en uso.");
-        }
-
-        Usuario admin = new Usuario(
-                registerRequest.getNombre(),
-                registerRequest.getApellido(),
-                registerRequest.getCorreo(),
-                registerRequest.getTelefono(),
-                passwordEncoder.encode(registerRequest.getPassword())
-        );
-
-        admin.setMoneda(0);
-
-        Rol rolAdmin = rolRepository.findByNombre("ROLE_ADMIN")
-                .orElseThrow(() -> new RuntimeException("Rol ADMIN no encontrado"));
-
-        admin.setRol(rolAdmin);
-
-        userService.registerAdministrador(admin);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Administrador registrado con éxito.");
-    }
 
     @GetMapping("/token/info")
     public ResponseEntity<?> getTokenInfo(@RequestHeader("Authorization") String authHeader) {
