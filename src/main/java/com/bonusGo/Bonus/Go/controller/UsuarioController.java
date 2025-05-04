@@ -100,8 +100,7 @@ public class UsuarioController {
         return ResponseEntity.ok(actualizado);
     }
 
-    @PutMapping("/" +
-            "/{id}")
+    @PutMapping("/actualizarPerfil/{id}")
     public ResponseEntity<Usuario> actualizarUsuarioPerfil(
             @PathVariable int id,
             @RequestBody Usuario usuarioActualizado
