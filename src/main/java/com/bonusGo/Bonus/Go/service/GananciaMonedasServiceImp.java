@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GananciaMonedasServiceImp implements GananciaMonedasService{
@@ -32,18 +31,14 @@ public class GananciaMonedasServiceImp implements GananciaMonedasService{
         Objetivo objetivoEncontrado = objetivoRepository.findById(idObjetivo)
                 .orElseThrow(() -> new IllegalArgumentException("Objetivo no encontrado"));
 
-        // Verificar si ya existe una relación entre el usuario y el objetivo
         GananciaMonedas relacionUsuarioObjetivo = gananciaMonedasRepository.relacionUsuarioYObjetivo(idUsuario, idObjetivo);
 
         if (relacionUsuarioObjetivo == null) {
-            // Crear nueva relación si no existe
             relacionUsuarioObjetivo = new GananciaMonedas(usuarioEncontrado, objetivoEncontrado, false, true);
         } else {
-            // Si ya fue reclamado, no permitir volver a habilitarlo
             if (relacionUsuarioObjetivo.isReclamado()) {
                 throw new IllegalStateException("El usuario ya ha reclamado este objetivo.");
             }
-            // Si no fue reclamado, habilitarlo
             relacionUsuarioObjetivo.setHabilitado(true);
         }
 
@@ -52,15 +47,12 @@ public class GananciaMonedasServiceImp implements GananciaMonedasService{
 
     @Override
     public GananciaMonedas deshabilitarObjetivoParaUsuario(int idUsuario, int idObjetivo) {
-        // Buscar la relación entre el usuario y el objetivo
         GananciaMonedas relacion = gananciaMonedasRepository.relacionUsuarioYObjetivo(idUsuario, idObjetivo);
 
-        // Si no existe, es que el objetivo no esta habilitado
         if (relacion == null) {
             throw new IllegalStateException("No existe relación entre el usuario y el objetivo.");
         }
 
-        // Deshabilitar el objetivo para el usuario
         relacion.setHabilitado(false);
 
         return gananciaMonedasRepository.save(relacion);
@@ -71,17 +63,14 @@ public class GananciaMonedasServiceImp implements GananciaMonedasService{
         return gananciaMonedasRepository.findUsuariosConObjetivoHabilitado(idObjetivo);
     }
 
-
     @Override
     public void marcarObjetivoComoReclamado(int idUsuario, int idObjetivo) {
-        // Buscar la relación entre el usuario y el objetivo
         GananciaMonedas relacion = gananciaMonedasRepository.relacionUsuarioYObjetivo(idUsuario, idObjetivo);
 
         if (relacion == null || !relacion.isHabilitado()) {
             throw new IllegalStateException("El objetivo no está habilitado para este usuario o no existe la relación.");
         }
 
-        // Marcar como reclamado y deshabilitar
         relacion.setReclamado(true);
         relacion.setHabilitado(false);
 

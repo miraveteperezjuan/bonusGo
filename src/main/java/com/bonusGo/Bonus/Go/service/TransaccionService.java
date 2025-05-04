@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface TransaccionService {
 
-    // Canjear un producto
     Transaccion canjearProducto(int userId, int productoId);
     List<Producto> obtenerProductosCanjeadosPorUsuario(int userId);
 }

@@ -1,8 +1,6 @@
 package com.bonusGo.Bonus.Go.controller;
 
 import com.bonusGo.Bonus.Go.model.Producto;
-import com.bonusGo.Bonus.Go.model.Transaccion;
-import com.bonusGo.Bonus.Go.repository.ProductoRepository;
 import com.bonusGo.Bonus.Go.service.ProductoService;
 import com.bonusGo.Bonus.Go.service.TransaccionService;
 import com.bonusGo.Bonus.Go.service.UsuarioService;
@@ -20,12 +18,6 @@ public class TransaccionController {
     @Autowired
     private TransaccionService transaccionService;
 
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private ProductoService productoService;
-
     @PostMapping("/canjear")
     public ResponseEntity<?> canjearProducto(@RequestParam int idUsuario, @RequestParam int idProducto) {
         try {
@@ -37,8 +29,6 @@ public class TransaccionController {
         }
     }
 
-
-    // historial
     @GetMapping("/canjeados/{idUsuario}")
     public ResponseEntity<List<Producto>> obtenerProductosCanjeados(@PathVariable int idUsuario) {
         List<Producto> productos = transaccionService.obtenerProductosCanjeadosPorUsuario(idUsuario);
@@ -47,5 +37,4 @@ public class TransaccionController {
         }
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
-
 }

@@ -2,7 +2,6 @@ package com.bonusGo.Bonus.Go.controller;
 
 import com.bonusGo.Bonus.Go.model.GananciaMonedas;
 import com.bonusGo.Bonus.Go.model.Objetivo;
-import com.bonusGo.Bonus.Go.repository.ObjetivoRepository;
 import com.bonusGo.Bonus.Go.service.GananciaMonedasService;
 import com.bonusGo.Bonus.Go.service.ObjetivoService;
 import com.bonusGo.Bonus.Go.service.UsuarioService;
@@ -43,8 +42,6 @@ public class GananciaMonedasController {
         }
     }
 
-
-
     @GetMapping("/habilitados")
     public ResponseEntity<List<Integer>> obtenerUsuariosConObjetivoHabilitado(@RequestParam int idObjetivo) {
         try {
@@ -54,7 +51,6 @@ public class GananciaMonedasController {
             return ResponseEntity.badRequest().build();
         }
     }
-
 
     // Endpoint para marcar un objetivo como reclamado
     @PostMapping("/reclamar")

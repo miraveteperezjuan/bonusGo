@@ -22,12 +22,6 @@ public class UsuarioServiceImp implements UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private TransaccionRepository transaccionRepository;
-
-    @Autowired
-    private GananciaMonedasRepository gananciasRepository;
-
-    @Autowired
     private RolRepository rolRepository;
 
     @Autowired
@@ -61,32 +55,6 @@ public class UsuarioServiceImp implements UsuarioService {
     }
 
     @Override
-    public Usuario registerAdministrador(Usuario usuario) {
-        usuario.setMoneda(0);
-
-        Rol rol = rolRepository.findById(2).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-        usuario.setRol(rol);
-
-        if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
-            throw new RuntimeException("El correo ya está registrado");
-        }
-        return usuarioRepository.save(usuario);
-    }
-
-    @Override
-    public List<Usuario> getUsuarioCorreo(String correo) {
-        List<Usuario> usuarios = usuarioRepository.getByCorreo(correo);
-
-        // Se verifica si la moneda es nula, en ese caso, se le asigna 0
-        for (Usuario usuario : usuarios) {
-            if (usuario.getMoneda() == null) {
-                usuario.setMoneda(0);
-            }
-        }
-        return usuarios;
-    }
-
-    @Override
     public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
@@ -105,24 +73,6 @@ public class UsuarioServiceImp implements UsuarioService {
         }
         Usuario usuario = usuarioOptional.get();
         usuarioRepository.deleteById(id);
-    }
-
-    @Override
-    public Usuario updateUsuarioContacto(int id, String nuevoCorreo, String nuevoTelefono) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        if (nuevoCorreo != null && !nuevoCorreo.isEmpty()) {
-            if (usuarioRepository.existsByCorreo(nuevoCorreo)) {
-                throw new RuntimeException("El correo ya está en uso");
-            }
-            usuario.setCorreo(nuevoCorreo);
-        }
-
-        if (nuevoTelefono != null && !nuevoTelefono.isEmpty()) {
-            usuario.setTelefono(nuevoTelefono);
-        }
-        return usuarioRepository.save(usuario);
     }
 
     @Override
@@ -162,14 +112,6 @@ public class UsuarioServiceImp implements UsuarioService {
         existente.setTelefono(usuarioActualizado.getTelefono());
 
         return usuarioRepository.save(existente);
-    }
-
-
-    @Override
-    public Integer getMonedasById(int id) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return usuario.getMoneda();
     }
 
     @Override

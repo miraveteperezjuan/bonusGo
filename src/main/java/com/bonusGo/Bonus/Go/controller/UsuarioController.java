@@ -5,7 +5,6 @@ import com.bonusGo.Bonus.Go.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +16,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    // Obtener usuario por ID
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable int id) {
         try {
@@ -42,7 +37,6 @@ public class UsuarioController {
         }
     }
 
-    // Listar todos los usuarios (solo ADMIN debería acceder)
     @GetMapping("/getTodos")
     public ResponseEntity<List<Usuario>> getAllUsuarios() {
         return new ResponseEntity<>(usuarioService.getAllUsuarios(), HttpStatus.OK);

@@ -14,7 +14,6 @@ import java.util.List;
 @RequestMapping("roles")
 public class RolController {
 
-    //http://localhost:8080/roles/
     @Autowired
     private RolService rolService;
 
@@ -23,5 +22,4 @@ public class RolController {
         List<Rol> roles = rolService.getAllRoles();
         return ResponseEntity.ok(roles);
     }
-
 }

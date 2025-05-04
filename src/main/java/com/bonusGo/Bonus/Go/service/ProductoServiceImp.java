@@ -1,12 +1,7 @@
 package com.bonusGo.Bonus.Go.service;
 
 import com.bonusGo.Bonus.Go.model.Producto;
-import com.bonusGo.Bonus.Go.model.Tipo;
-import com.bonusGo.Bonus.Go.model.Transaccion;
-import com.bonusGo.Bonus.Go.model.Usuario;
 import com.bonusGo.Bonus.Go.repository.ProductoRepository;
-import com.bonusGo.Bonus.Go.repository.TransaccionRepository;
-import com.bonusGo.Bonus.Go.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +13,6 @@ public class ProductoServiceImp implements ProductoService {
 
     @Autowired
     private ProductoRepository productoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private TransaccionRepository transaccionRepository;
 
     @Override
     public Producto registrarProducto(Producto producto) {

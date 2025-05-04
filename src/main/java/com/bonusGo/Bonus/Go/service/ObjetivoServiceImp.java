@@ -1,9 +1,7 @@
 package com.bonusGo.Bonus.Go.service;
 
 import com.bonusGo.Bonus.Go.model.*;
-import com.bonusGo.Bonus.Go.repository.GananciaMonedasRepository;
 import com.bonusGo.Bonus.Go.repository.ObjetivoRepository;
-import com.bonusGo.Bonus.Go.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +12,6 @@ public class ObjetivoServiceImp implements ObjetivoService {
 
     @Autowired
     private ObjetivoRepository objetivoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private GananciaMonedasRepository gananciaRepository;
 
     @Override
     public Objetivo registObjetivo(Objetivo objetivo) {

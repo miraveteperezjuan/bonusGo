@@ -65,10 +65,6 @@ public class SecurityConfig {
                         .requestMatchers("/objetivo/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/producto/canjear/**", "/objetivos/canjear/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
-                        //Quedaría por configurar eso.
-                        //.requestMatchers("/usuario/*/productos-canjeados").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-
-
                         // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()
                 )

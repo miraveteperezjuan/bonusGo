@@ -35,12 +35,10 @@ public class TransaccionServiceImp implements TransaccionService {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // Verificar si el usuario tiene suficientes monedas
         if (usuario.getMoneda() < producto.getCoste()) {
             throw new RuntimeException("No tienes suficientes PigCoins para canjear este producto.");
         }
 
-        // Restar las monedas del usuario
         usuario.setMoneda(usuario.getMoneda() - producto.getCoste());
         usuarioRepository.save(usuario);
 
