@@ -35,12 +35,15 @@ public class GananciaMonedasServiceImp implements GananciaMonedasService{
         // Verificar si ya existe una relación entre el usuario y el objetivo
         GananciaMonedas relacionUsuarioObjetivo = gananciaMonedasRepository.relacionUsuarioYObjetivo(idUsuario, idObjetivo);
 
-
         if (relacionUsuarioObjetivo == null) {
-            // Si no existía la relación, la crea en la bbdd
+            // Crear nueva relación si no existe
             relacionUsuarioObjetivo = new GananciaMonedas(usuarioEncontrado, objetivoEncontrado, false, true);
         } else {
-            // Si ya existe la habilita
+            // Si ya fue reclamado, no permitir volver a habilitarlo
+            if (relacionUsuarioObjetivo.isReclamado()) {
+                throw new IllegalStateException("El usuario ya ha reclamado este objetivo.");
+            }
+            // Si no fue reclamado, habilitarlo
             relacionUsuarioObjetivo.setHabilitado(true);
         }
 

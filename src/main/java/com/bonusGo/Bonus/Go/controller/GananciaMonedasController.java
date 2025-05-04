@@ -7,6 +7,7 @@ import com.bonusGo.Bonus.Go.service.GananciaMonedasService;
 import com.bonusGo.Bonus.Go.service.ObjetivoService;
 import com.bonusGo.Bonus.Go.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class GananciaMonedasController {
     private UsuarioService usuarioService;
 
     @PostMapping("/habilitar")
-    public ResponseEntity<GananciaMonedas> cambiarEstadoObjetivo(@RequestBody GananciaMonedas ganancia) {
+    public ResponseEntity<?> cambiarEstadoObjetivo(@RequestBody GananciaMonedas ganancia) {
         try {
             int idUsuario = ganancia.getUsuario().getId_Usuario();
             int idObjetivo = ganancia.getObjetivo().getIdObjetivo();
@@ -36,11 +37,12 @@ public class GananciaMonedasController {
                     ? gananciaMonedasService.habilitarObjetivoParaUsuario(idUsuario, idObjetivo)
                     : gananciaMonedasService.deshabilitarObjetivoParaUsuario(idUsuario, idObjetivo);
 
-            return ResponseEntity.ok(resultado);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>(resultado, HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
 
 
     @GetMapping("/habilitados")
