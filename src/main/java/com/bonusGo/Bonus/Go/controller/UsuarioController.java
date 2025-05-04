@@ -43,19 +43,15 @@ public class UsuarioController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Usuario> actualizarUsuario(
-            @PathVariable int id,
-            @RequestBody Usuario usuarioActualizado
-    ) {
+    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioActualizado)
+    {
         Usuario actualizado = usuarioService.updateUsuario(id, usuarioActualizado);
         return ResponseEntity.ok(actualizado);
     }
 
     @PutMapping("/actualizarPerfil/{id}")
-    public ResponseEntity<Usuario> actualizarUsuarioPerfil(
-            @PathVariable int id,
-            @RequestBody Usuario usuarioActualizado
-    ) {
+    public ResponseEntity<Usuario> actualizarUsuarioPerfil(@PathVariable int id, @RequestBody Usuario usuarioActualizado)
+    {
         Usuario actualizado = usuarioService.updateUsuarioPerfil(id, usuarioActualizado);
         return ResponseEntity.ok(actualizado);
     }

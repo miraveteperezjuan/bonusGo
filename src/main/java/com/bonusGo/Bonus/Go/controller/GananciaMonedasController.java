@@ -60,7 +60,6 @@ public class GananciaMonedasController {
         int monedasGanadas = objetivo.getMonedas();
 
         usuarioService.updateMonedas(idUsuario, monedasGanadas);
-
         gananciaMonedasService.marcarObjetivoComoReclamado(idUsuario, idObjetivo);
     }
 }

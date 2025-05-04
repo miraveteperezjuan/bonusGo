@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -16,8 +17,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByCorreo(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByCorreo(email);
+
+        if (!usuarioOptional.isPresent()) {
+            System.out.println("Usuario no encontrado con correo: " + email);
+            throw new UsernameNotFoundException("Usuario no encontrado");
+        }
+
+        Usuario usuario = usuarioOptional.get();
 
         return new org.springframework.security.core.userdetails.User(
                 usuario.getCorreo(),

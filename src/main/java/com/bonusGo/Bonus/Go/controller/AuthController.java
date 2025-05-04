@@ -81,7 +81,7 @@ public class AuthController {
     @PostMapping("/registrar")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (userService.existsByEmail(request.getCorreo())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email ya en uso.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Correo ya en uso.");
         }
 
         Usuario usuario = new Usuario(
@@ -108,7 +108,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("error", "Token no proporcionado o mal formado"));
         }
 
-        String token = authHeader.substring(7); // Quita el prefijo "Bearer "
+        String token = authHeader.substring(7);
 
         if (!jwtUtil.validateJwtToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido"));
@@ -117,7 +117,6 @@ public class AuthController {
         String correo = jwtUtil.getUsernameFromJwt(token);
         String rol = jwtUtil.getRolFromJwt(token);
 
-        // nuevo
         Integer id = jwtUtil.getIdFromJwt(token);
         Map<String, Object> response = new HashMap<>();
         response.put("correo", correo);
@@ -126,6 +125,5 @@ public class AuthController {
 
         return ResponseEntity.ok(response);
     }
-
 }
 

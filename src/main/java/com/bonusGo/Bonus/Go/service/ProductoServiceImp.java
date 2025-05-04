@@ -21,27 +21,40 @@ public class ProductoServiceImp implements ProductoService {
 
     @Override
     public Producto actualizar(int id, Producto nuevoProducto) {
-        Producto productoExistente = productoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        try {
+            Optional<Producto> productoOptional = productoRepository.findById(id);
+            if (!productoOptional.isPresent()) {
+                System.out.println("Producto no encontrado con ID: " + id);
+                return null;
+            }
 
-        productoExistente.setNombre(nuevoProducto.getNombre());
-        productoExistente.setDescripcion(nuevoProducto.getDescripcion());
-        productoExistente.setTipo(nuevoProducto.getTipo());
-        productoExistente.setCoste(nuevoProducto.getCoste());
-        productoExistente.setImagen(nuevoProducto.getImagen());
+            Producto productoExistente = productoOptional.get();
+            productoExistente.setNombre(nuevoProducto.getNombre());
+            productoExistente.setDescripcion(nuevoProducto.getDescripcion());
+            productoExistente.setTipo(nuevoProducto.getTipo());
+            productoExistente.setCoste(nuevoProducto.getCoste());
+            productoExistente.setImagen(nuevoProducto.getImagen());
 
-        return productoRepository.save(productoExistente);
+            return productoRepository.save(productoExistente);
+        } catch (Exception e) {
+            System.out.println("Error al actualizar producto: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public void eliminarProducto(int id) {
-        Optional<Producto> producto = productoRepository.findById(id);
+        try {
+            Optional<Producto> productoOptional = productoRepository.findById(id);
+            if (!productoOptional.isPresent()) {
+                System.out.println("Producto no encontrado con ID: " + id);
+                return;
+            }
 
-        if (!producto.isPresent()) {
-            throw new RuntimeException("Usuario no encontrado");
+            productoRepository.deleteById(id);
+        } catch (Exception e) {
+            System.out.println("Error al eliminar producto: " + e.getMessage());
         }
-
-        productoRepository.deleteById(id);
     }
 
     @Override
@@ -51,6 +64,18 @@ public class ProductoServiceImp implements ProductoService {
 
     @Override
     public Producto buscarProductoId(int id) {
-        return productoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        try {
+            Optional<Producto> productoOptional = productoRepository.findById(id);
+            if (productoOptional.isPresent()) {
+                return productoOptional.get();
+            } else {
+                System.out.println("Producto no encontrado con ID: " + id);
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al buscar el producto: " + e.getMessage());
+            return null;
+        }
     }
+
 }

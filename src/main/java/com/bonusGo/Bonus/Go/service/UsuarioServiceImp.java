@@ -43,15 +43,26 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Override
     public Usuario registerUsuario(Usuario usuario) {
-        usuario.setMoneda(0);
+        try {
+            usuario.setMoneda(0);
 
-        Rol rol = rolRepository.findById(1).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-        usuario.setRol(rol);
+            Optional<Rol> rolOptional = rolRepository.findById(1);
+            if (!rolOptional.isPresent()) {
+                System.out.println("Rol no encontrado");
+                return null;
+            }
+            usuario.setRol(rolOptional.get());
 
-        if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
-            throw new RuntimeException("El correo ya está registrado");
+            if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
+                System.out.println("El correo ya está registrado");
+                return null;
+            }
+
+            return usuarioRepository.save(usuario);
+        } catch (Exception e) {
+            System.out.println("Error al registrar usuario: " + e.getMessage());
+            return null;
         }
-        return usuarioRepository.save(usuario);
     }
 
     @Override
@@ -66,52 +77,81 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Override
     public void deleteUsuario(int id) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
-
-        if (!usuarioOptional.isPresent()) {
-            throw new RuntimeException("Usuario no encontrado");
+        try {
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+            if (usuarioOptional.isPresent()) {
+                usuarioRepository.deleteById(id);
+            } else {
+                System.out.println("Usuario no encontrado");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al eliminar usuario: " + e.getMessage());
         }
-        Usuario usuario = usuarioOptional.get();
-        usuarioRepository.deleteById(id);
     }
 
     @Override
     public Usuario updateMonedas(int id, int monedas) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        try {
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+            if (!usuarioOptional.isPresent()) {
+                System.out.println("Usuario no encontrado");
+                return null;
+            }
 
-        int nuevasMonedas = usuario.getMoneda() + monedas;
-
-        usuario.setMoneda(nuevasMonedas);
-        return usuarioRepository.save(usuario);
+            Usuario usuario = usuarioOptional.get();
+            int nuevasMonedas = usuario.getMoneda() + monedas;
+            usuario.setMoneda(nuevasMonedas);
+            return usuarioRepository.save(usuario);
+        } catch (Exception e) {
+            System.out.println("Error al actualizar monedas: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public Usuario updateUsuario(int id, Usuario usuarioActualizado) {
-        Usuario existente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        try {
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+            if (!usuarioOptional.isPresent()) {
+                System.out.println("Usuario no encontrado con ID: " + id);
+                return null;
+            }
 
-        existente.setNombre(usuarioActualizado.getNombre());
-        existente.setApellido(usuarioActualizado.getApellido());
-        existente.setCorreo(usuarioActualizado.getCorreo());
-        existente.setTelefono(usuarioActualizado.getTelefono());
-        existente.setRol(usuarioActualizado.getRol());
-        existente.setMoneda(usuarioActualizado.getMoneda());
+            Usuario existente = usuarioOptional.get();
+            existente.setNombre(usuarioActualizado.getNombre());
+            existente.setApellido(usuarioActualizado.getApellido());
+            existente.setCorreo(usuarioActualizado.getCorreo());
+            existente.setTelefono(usuarioActualizado.getTelefono());
+            existente.setRol(usuarioActualizado.getRol());
+            existente.setMoneda(usuarioActualizado.getMoneda());
 
-        return usuarioRepository.save(existente);
+            return usuarioRepository.save(existente);
+        } catch (Exception e) {
+            System.out.println("Error al actualizar usuario: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public Usuario updateUsuarioPerfil(int id, Usuario usuarioActualizado) {
-        Usuario existente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        try {
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+            if (!usuarioOptional.isPresent()) {
+                System.out.println("Usuario no encontrado con ID: " + id);
+                return null;
+            }
 
-        existente.setNombre(usuarioActualizado.getNombre());
-        existente.setApellido(usuarioActualizado.getApellido());
-        existente.setCorreo(usuarioActualizado.getCorreo());
-        existente.setTelefono(usuarioActualizado.getTelefono());
+            Usuario existente = usuarioOptional.get();
+            existente.setNombre(usuarioActualizado.getNombre());
+            existente.setApellido(usuarioActualizado.getApellido());
+            existente.setCorreo(usuarioActualizado.getCorreo());
+            existente.setTelefono(usuarioActualizado.getTelefono());
 
-        return usuarioRepository.save(existente);
+            return usuarioRepository.save(existente);
+        } catch (Exception e) {
+            System.out.println("Error al actualizar perfil de usuario: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override

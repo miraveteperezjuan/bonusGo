@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ObjetivoServiceImp implements ObjetivoService {
@@ -36,20 +37,41 @@ public class ObjetivoServiceImp implements ObjetivoService {
 
     @Override
     public Objetivo buscarObjetivo(int id) {
-        return objetivoRepository.findById(id).orElseThrow(() -> new RuntimeException("Objetivo no encontrado"));
+        try {
+            Optional<Objetivo> objetivoOptional = objetivoRepository.findById(id);
+            if (objetivoOptional.isPresent()) {
+                return objetivoOptional.get();
+            } else {
+                System.out.println("Objetivo no encontrado con ID: " + id);
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al buscar objetivo: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public Objetivo actualizar(int id, Objetivo nuevoObjetivo) {
-        Objetivo objetivoExistente = objetivoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Objetivo no encontrado"));
+        try {
+            Optional<Objetivo> objetivoOptional = objetivoRepository.findById(id);
+            if (!objetivoOptional.isPresent()) {
+                System.out.println("Objetivo no encontrado con ID: " + id);
+                return null;
+            }
 
-        objetivoExistente.setNombre(nuevoObjetivo.getNombre());
-        objetivoExistente.setDescripcion(nuevoObjetivo.getDescripcion());
-        objetivoExistente.setCategoria(nuevoObjetivo.getCategoria());
-        objetivoExistente.setMonedas(nuevoObjetivo.getMonedas());
-        objetivoExistente.setImagen(nuevoObjetivo.getImagen());
+            Objetivo objetivoExistente = objetivoOptional.get();
+            objetivoExistente.setNombre(nuevoObjetivo.getNombre());
+            objetivoExistente.setDescripcion(nuevoObjetivo.getDescripcion());
+            objetivoExistente.setCategoria(nuevoObjetivo.getCategoria());
+            objetivoExistente.setMonedas(nuevoObjetivo.getMonedas());
+            objetivoExistente.setImagen(nuevoObjetivo.getImagen());
 
-        return objetivoRepository.save(objetivoExistente);
+            return objetivoRepository.save(objetivoExistente);
+        } catch (Exception e) {
+            System.out.println("Error al actualizar objetivo: " + e.getMessage());
+            return null;
+        }
     }
+
 }
